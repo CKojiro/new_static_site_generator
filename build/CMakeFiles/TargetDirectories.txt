@@ -1,3 +1,0 @@
-/home/ckoji/githome/new_static_site_generator/build/CMakeFiles/new_static_site_generator.dir
-/home/ckoji/githome/new_static_site_generator/build/CMakeFiles/edit_cache.dir
-/home/ckoji/githome/new_static_site_generator/build/CMakeFiles/rebuild_cache.dir
