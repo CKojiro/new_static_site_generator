@@ -1,0 +1,3 @@
+/mnt/c/Users/ckoji/git-workspace/new_static_site_generator/build/_deps/md4qt-subbuild/CMakeFiles/md4qt-populate.dir
+/mnt/c/Users/ckoji/git-workspace/new_static_site_generator/build/_deps/md4qt-subbuild/CMakeFiles/edit_cache.dir
+/mnt/c/Users/ckoji/git-workspace/new_static_site_generator/build/_deps/md4qt-subbuild/CMakeFiles/rebuild_cache.dir

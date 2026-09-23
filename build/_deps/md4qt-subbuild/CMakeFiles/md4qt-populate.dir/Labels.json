@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/mnt/c/Users/ckoji/git-workspace/new_static_site_generator/build/_deps/md4qt-subbuild/CMakeFiles/md4qt-populate"
+		},
+		{
+			"file" : "/mnt/c/Users/ckoji/git-workspace/new_static_site_generator/build/_deps/md4qt-subbuild/CMakeFiles/md4qt-populate.rule"
+		},
+		{
+			"file" : "/mnt/c/Users/ckoji/git-workspace/new_static_site_generator/build/_deps/md4qt-subbuild/CMakeFiles/md4qt-populate-complete.rule"
+		},
+		{
+			"file" : "/mnt/c/Users/ckoji/git-workspace/new_static_site_generator/build/_deps/md4qt-subbuild/md4qt-populate-prefix/src/md4qt-populate-stamp/md4qt-populate-build.rule"
+		},
+		{
+			"file" : "/mnt/c/Users/ckoji/git-workspace/new_static_site_generator/build/_deps/md4qt-subbuild/md4qt-populate-prefix/src/md4qt-populate-stamp/md4qt-populate-configure.rule"
+		},
+		{
+			"file" : "/mnt/c/Users/ckoji/git-workspace/new_static_site_generator/build/_deps/md4qt-subbuild/md4qt-populate-prefix/src/md4qt-populate-stamp/md4qt-populate-download.rule"
+		},
+		{
+			"file" : "/mnt/c/Users/ckoji/git-workspace/new_static_site_generator/build/_deps/md4qt-subbuild/md4qt-populate-prefix/src/md4qt-populate-stamp/md4qt-populate-install.rule"
+		},
+		{
+			"file" : "/mnt/c/Users/ckoji/git-workspace/new_static_site_generator/build/_deps/md4qt-subbuild/md4qt-populate-prefix/src/md4qt-populate-stamp/md4qt-populate-mkdir.rule"
+		},
+		{
+			"file" : "/mnt/c/Users/ckoji/git-workspace/new_static_site_generator/build/_deps/md4qt-subbuild/md4qt-populate-prefix/src/md4qt-populate-stamp/md4qt-populate-patch.rule"
+		},
+		{
+			"file" : "/mnt/c/Users/ckoji/git-workspace/new_static_site_generator/build/_deps/md4qt-subbuild/md4qt-populate-prefix/src/md4qt-populate-stamp/md4qt-populate-test.rule"
+		},
+		{
+			"file" : "/mnt/c/Users/ckoji/git-workspace/new_static_site_generator/build/_deps/md4qt-subbuild/md4qt-populate-prefix/src/md4qt-populate-stamp/md4qt-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"md4qt-populate"
+		],
+		"name" : "md4qt-populate"
+	}
+}
