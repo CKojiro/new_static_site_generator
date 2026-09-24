@@ -1,6 +1,6 @@
 
 #define MD4QT_QT_SUPPORT
-#include "md4qt/parser.h"
+#include "../md4qt/parser.h"
 
 #include <iostream>
 
