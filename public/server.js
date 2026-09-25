@@ -1,4 +1,5 @@
 
+const fs = require('fs');
 const http = require('http');
 
 const PORT = 8888;
@@ -22,7 +23,7 @@ const server = http.createServer((req, res) =>
     }
     else if (req.url === '/styles.css')
     {
-        fs.readFile('./styles.css')
+        fs.readFile('./styles.css', (err, data) =>
         {
             if (err)
             {
@@ -33,7 +34,7 @@ const server = http.createServer((req, res) =>
 
             res.writeHead(200, {'Content-Type': 'text/css'});
             res.end(data);
-        }
+        });
     }
     else
     {
