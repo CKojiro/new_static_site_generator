@@ -16,25 +16,31 @@ bool TextNode::equals(const TextNode& other)
 
 std::string TextNode::stringRepresentation()
 {
-    std::string output;
+    std::stringstream output;
 
     switch (myTextType)
     {
         case TextType::Text:
+            output << "TextNode(" << myText << ", " << "text" << ", " << myUrl << ")";
             break;
         case TextType::Bold:
+            output << "TextNode(" << myText << ", " << "bold" << ", " << myUrl << ")";
             break;
         case TextType::Italic:
+            output << "TextNode(" << myText << ", " << "italic" << ", " << myUrl << ")";
             break;
         case TextType::Code:
+            output << "TextNode(" << myText << ", " << "code" << ", " << myUrl << ")";
             break;
         case TextType::Link:
+            output << "TextNode(" << myText << ", " << "link" << ", " << myUrl << ")";
             break;
         case TextType::Image:
+            output << "TextNode(" << myText << ", " << "image" << ", " << myUrl << ")";
             break;
         default:
             break;
     }
 
-    return output;
+    return output.str();
 }
