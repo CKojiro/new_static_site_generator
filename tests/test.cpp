@@ -2,6 +2,16 @@
 #include "../src/textnode.hpp"
 #include <catch2/catch_test_macros.hpp>
 
+TEST_CASE("equals testing", "[equals]")
+{
+    TextNode one("One", TextType::Text, "https://one.com");
+    TextNode two("One", TextType::Text, "https://one.com");
+    TextNode three("Three", TextType::Link, "https://three.com");
+
+    REQUIRE(one.equals(two) == true);
+    REQUIRE(one.equals(three) == false);
+}
+
 TEST_CASE("stringRepresentation outputs", "[stringRepresentation]")
 {
     TextNode testOne("This is the text one", TextType::Text, "https://text.com");
@@ -12,9 +22,9 @@ TEST_CASE("stringRepresentation outputs", "[stringRepresentation]")
     TextNode testSix("This is the image one", TextType::Image, "https://image.com");
 
     REQUIRE(testOne.stringRepresentation() == "TextNode(This is the text one, text, https://text.com)");
-    REQUIRE(testTwo.stringRepresentation() == "TextNode(");
-    REQUIRE(testThree.stringRepresentation() == "TextNode(");
-    REQUIRE(testFour.stringRepresentation() == "TextNode(");
-    REQUIRE(testFive.stringRepresentation() == "TextNode(");
-    REQUIRE(testSix.stringRepresentation() == "TextNode(");
+    REQUIRE(testTwo.stringRepresentation() == "TextNode(This is the bold one, bold, https://bold.com");
+    REQUIRE(testThree.stringRepresentation() == "TextNode(This is the italic one, italic, https://italic.com");
+    REQUIRE(testFour.stringRepresentation() == "TextNode(This is the code one, code, https://code.com");
+    REQUIRE(testFive.stringRepresentation() == "TextNode(This is the link one, link, https://link.com");
+    REQUIRE(testSix.stringRepresentation() == "TextNode(This is the image one, image, https://image.com");
 }
