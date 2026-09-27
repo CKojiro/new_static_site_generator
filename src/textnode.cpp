@@ -1,6 +1,13 @@
 
 #include "textnode.hpp"
 
+TextNode::TextNode(std::string theText, TextType theTextType, std::string theUrl)
+{
+    myText = theText;
+    myTextType = theTextType;
+    myUrl = theUrl;
+}
+
 bool TextNode::equals(const TextNode& other)
 {
     const TextNode* tPointer = dynamic_cast<const TextNode*>(&other);
