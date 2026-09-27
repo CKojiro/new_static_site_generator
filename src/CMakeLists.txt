@@ -4,6 +4,12 @@ project(new_static_site_generator)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_library(static_site_lib STATIC
+    textnode.hpp
+)
+
+target_include_directories(static_site_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
 add_executable(new_static_site_generator main.cpp)
 
 target_include_directories(new_static_site_generator PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/md4qt)

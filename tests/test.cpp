@@ -2,7 +2,7 @@
 #include "../src/textnode.hpp"
 #include <catch2/catch_test_macros.hpp>
 
-TEST_CASE("equals testing", "[equals]")
+TEST_CASE("equals works", "[equals]")
 {
     TextNode one("One", TextType::Text, "https://one.com");
     TextNode two("One", TextType::Text, "https://one.com");
@@ -12,7 +12,7 @@ TEST_CASE("equals testing", "[equals]")
     REQUIRE(one.equals(three) == false);
 }
 
-TEST_CASE("stringRepresentation outputs", "[stringRepresentation]")
+TEST_CASE("stringRepresentation works", "[stringRepresentation]")
 {
     TextNode testOne("This is the text one", TextType::Text, "https://text.com");
     TextNode testTwo("This is the bold one", TextType::Bold, "https://bold.com");
