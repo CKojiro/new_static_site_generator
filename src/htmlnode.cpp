@@ -3,7 +3,7 @@
 
 HTMLNode::HTMLNode(std::string theTag, std::string theValue,
         std::vector<HTMLNode> theChildren,
-        std::unordered_map<std::string, std::string> theProps)
+        std::map<std::string, std::string> theProps)
 {
     myTag = theTag;
     myValue = theValue;
@@ -16,11 +16,24 @@ void HTMLNode::toHTML()
     throw std::logic_error("Functionality not implemented!");
 }
 
-std::string propsToHTML()
+std::string HTMLNode::propsToHTML()
 {
     std::stringstream output;
 
-    
+    for (const auto& [key, value]: myProps)
+    {
+        output << " " << key << "=\"" << value << "\"";
+    }
 
     return output.str();
+}
+
+std::string HTMLNode::stringRepresentation()
+{
+    std::stringstream output;
+
+    output << "tag = " << myTag << "\n" << "value = " << myValue
+        << "\n" << "children = ";
+
+    
 }
