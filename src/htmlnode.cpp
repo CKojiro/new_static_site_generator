@@ -35,5 +35,5 @@ std::string HTMLNode::stringRepresentation()
     output << "tag = " << myTag << "\n" << "value = " << myValue
         << "\n" << "children = ";
 
-    
+    return output.str();
 }
