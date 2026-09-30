@@ -18,7 +18,7 @@ public:
         std::vector<HTMLNode> theChildren,
         std::map<std::string, std::string> theProps);
 
-    void toHTML();
+    virtual void toHTML();
     std::string propsToHTML();
     std::string stringRepresentation();
 };
