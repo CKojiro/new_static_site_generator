@@ -3,7 +3,7 @@
 
 HTMLNode::HTMLNode(std::string theTag, std::string theValue,
         std::vector<HTMLNode> theChildren,
-        std::map<std::string, std::string> theProps)
+        std::map<std::string, std::pair<std::string, std::string>> theProps)
 {
     myTag = theTag;
     myValue = theValue;
@@ -11,9 +11,11 @@ HTMLNode::HTMLNode(std::string theTag, std::string theValue,
     myProps = theProps;
 }
 
-void HTMLNode::toHTML()
+std::string HTMLNode::toHTML()
 {
     throw std::logic_error("Functionality not implemented!");
+
+    return "";
 }
 
 std::string HTMLNode::propsToHTML()
@@ -38,17 +40,32 @@ std::string HTMLNode::stringRepresentation()
     return output.str();
 }
 
+std::string HTMLNode::getTag()
+{
+    return this->myTag;
+}
+
+std::string HTMLNode::getValue()
+{
+    return this->myValue;
+}
+
+std::map<std::string, std::pair<std::string, std::string>> HTMLNode::getProps()
+{
+    return this->myProps;
+}
+
 void HTMLNode::setTag(std::string theTag)
 {
-    myTag = theTag;
+    this->myTag = theTag;
 }
 
 void HTMLNode::setValue(std::string theValue)
 {
-    myValue = theValue;
+    this->myValue = theValue;
 }
 
-void HTMLNode::setProps(std::map<std::string, std::string> theProps)
+void HTMLNode::setProps(std::map<std::string, std::pair<std::string, std::string>> theProps)
 {
-    myProps = theProps;
+    this->myProps = theProps;
 }
