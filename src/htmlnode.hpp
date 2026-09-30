@@ -21,4 +21,8 @@ public:
     virtual void toHTML();
     std::string propsToHTML();
     std::string stringRepresentation();
+
+    void setTag(std::string theTag);
+    void setValue(std::string theValue);
+    void setProps(std::map<std::string, std::string> theProps);
 };

@@ -1,14 +1,13 @@
 
 #include "htmlnode.hpp"
 
-class LeafNode : HTMLNode
+class LeafNode : public HTMLNode
 {
 private:
 
 
 public:
     LeafNode(std::string theTag, std::string theValue,
-        std::vector<HTMLNode> theChildren,
         std::map<std::string, std::string> theProps);
 
     void toHTML();

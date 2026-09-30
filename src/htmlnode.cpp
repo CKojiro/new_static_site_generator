@@ -37,3 +37,18 @@ std::string HTMLNode::stringRepresentation()
 
     return output.str();
 }
+
+void HTMLNode::setTag(std::string theTag)
+{
+    myTag = theTag;
+}
+
+void HTMLNode::setValue(std::string theValue)
+{
+    myValue = theValue;
+}
+
+void HTMLNode::setProps(std::map<std::string, std::string> theProps)
+{
+    myProps = theProps;
+}
