@@ -5,7 +5,7 @@ LeafNode::LeafNode(std::string theTag, std::string theValue)
     : HTMLNode(theTag, theValue, {}, {}) {}
 
 LeafNode::LeafNode(std::string theTag, std::string theValue,
-    std::map<std::string, std::string> theProps)
+    std::map<std::string, std::pair<std::string, std::string>> theProps)
     : HTMLNode(theTag, theValue, {}, theProps) {}
 
 std::string LeafNode::toHTML()
@@ -28,7 +28,7 @@ std::string LeafNode::toHTML()
     }
     else
     {
-        auto [key, value] = *getProps().begin();
+        auto [key, value] = getProps()[getTag()];
         output << "<" << getTag();
         output << " " << key << "=" << "\"" << value << "\">";
         output << getValue() << "</" << getTag() << ">";
@@ -44,9 +44,10 @@ std::string LeafNode::stringRepresentation()
     output << "tag = " << getTag() << "\n" << "value = " << getValue()
         << "\n" << "props = {";
 
-    for (const auto& [key, value] : getProps())
+    for (const auto& [tag, nestedPair] : getProps())
     {
-        output << "{" << key << ", " << value << "}, ";
+        const auto& [key, value] = nestedPair;
+        output << "{" << key << ", " << value << "},\n";
     }
 
     output << "}";

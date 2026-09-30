@@ -22,8 +22,9 @@ std::string HTMLNode::propsToHTML()
 {
     std::stringstream output;
 
-    for (const auto& [key, value]: myProps)
+    for (const auto& [tag, nestedPair]: myProps)
     {
+        const auto& [key, value] = nestedPair;
         output << " " << key << "=\"" << value << "\"";
     }
 
