@@ -51,9 +51,14 @@ std::string HTMLNode::getValue()
     return this->myValue;
 }
 
+std::vector<HTMLNode> HTMLNode::getChildren()
+{
+    return this->myChildren;
+}
+
 std::map<std::string, std::pair<std::string, std::string>> HTMLNode::getProps()
 {
-    return this->myProps;
+    return myProps;
 }
 
 void HTMLNode::setTag(std::string theTag)

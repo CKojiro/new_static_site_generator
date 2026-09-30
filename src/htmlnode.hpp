@@ -1,4 +1,6 @@
 
+#pragma once
+
 #include <string>
 #include <vector>
 #include <sstream>
@@ -24,6 +26,7 @@ public:
 
     std::string getTag();
     std::string getValue();
+    std::vector<HTMLNode> getChildren();
     std::map<std::string, std::pair<std::string, std::string>> getProps();
 
     void setTag(std::string theTag);
