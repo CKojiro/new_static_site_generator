@@ -24,7 +24,14 @@ std::string ParentNode::toHTML()
     
     std::stringstream output;
 
-    
+    output << "<" << getTag() << ">";
+
+    for (const auto& node : getChildren())
+    {
+        
+    }
+
+    output << "</" << getTag() << ">";
 
     return output.str();
 }
