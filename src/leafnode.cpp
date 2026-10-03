@@ -28,7 +28,7 @@ std::string LeafNode::toHTML()
     }
     else
     {
-        auto [key, value] = getProps()[getTag()];
+        const auto& [key, value] = getProps().at(getTag());
         output << "<" << getTag();
         output << " " << key << "=" << "\"" << value << "\">";
         output << getValue() << "</" << getTag() << ">";
