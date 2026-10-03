@@ -41,22 +41,22 @@ std::string HTMLNode::stringRepresentation()
     return output.str();
 }
 
-std::string HTMLNode::getTag()
+std::string HTMLNode::getTag() const
 {
-    return this->myTag;
+    return myTag;
 }
 
-std::string HTMLNode::getValue()
+std::string HTMLNode::getValue() const
 {
-    return this->myValue;
+    return myValue;
 }
 
-std::vector<HTMLNode> HTMLNode::getChildren()
+const std::vector<HTMLNode>& HTMLNode::getChildren() const
 {
-    return this->myChildren;
+    return myChildren;
 }
 
-std::map<std::string, std::pair<std::string, std::string>> HTMLNode::getProps()
+const std::map<std::string, std::pair<std::string, std::string>>& HTMLNode::getProps() const
 {
     return myProps;
 }

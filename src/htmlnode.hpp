@@ -24,10 +24,10 @@ public:
     std::string propsToHTML();
     virtual std::string stringRepresentation();
 
-    std::string getTag();
-    std::string getValue();
-    std::vector<HTMLNode> getChildren();
-    std::map<std::string, std::pair<std::string, std::string>> getProps();
+    std::string getTag() const;
+    std::string getValue() const;
+    const std::vector<HTMLNode>& getChildren() const;
+    const std::map<std::string, std::pair<std::string, std::string>>& getProps() const;
 
     void setTag(std::string theTag);
     void setValue(std::string theValue);
