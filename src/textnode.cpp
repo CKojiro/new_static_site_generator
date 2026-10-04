@@ -69,10 +69,10 @@ LeafNode TextNode::textNodeToHTMLNode()
             return LeafNode("code", myText);
             break;
         case TextType::Link:
-            return LeafNode("a", myText, {"a", std::pair{"href", myText}});
+            return LeafNode("a", myText, {{"a", {"href", myText}}});
             break;
         case TextType::Image:
-            return LeafNode("img", "", {"img", {{"src", ""}, {"alt", ""}}});
+            return LeafNode("img", "", {{"img", {"src", ""}}, {"img", {"alt", ""}}});
             break;
         default:
             throw std::invalid_argument("TextType is not one of the allowed types.");
