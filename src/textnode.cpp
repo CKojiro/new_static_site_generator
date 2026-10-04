@@ -79,3 +79,19 @@ LeafNode TextNode::textNodeToHTMLNode()
             break;
     }
 }
+
+std::vector<TextNode> TextNode::splitNodesDelimiter(std::vector<TextNode> oldNodes,
+    std::string delimiter, TextType textType)
+{
+    std::vector<TextNode> newNodes;
+
+    for (TextNode node : oldNodes)
+    {
+        for (char c : node.myText)
+        {
+            
+        }
+    }
+
+    return newNodes;
+}

@@ -30,4 +30,6 @@ public:
     std::string stringRepresentation();
 
     LeafNode textNodeToHTMLNode();
+    std::vector<TextNode> splitNodesDelimiter(std::vector<TextNode> oldNodes,
+        std::string delimiter, TextType textType);
 };
