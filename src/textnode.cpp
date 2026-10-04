@@ -51,3 +51,31 @@ std::string TextNode::stringRepresentation()
 
     return output.str();
 }
+
+LeafNode TextNode::textNodeToHTMLNode()
+{
+    switch (myTextType)
+    {
+        case TextType::Text:
+            return LeafNode("", myText);
+            break;
+        case TextType::Bold:
+            return LeafNode("b", myText);
+            break;
+        case TextType::Italic:
+            return LeafNode("i", myText);
+            break;
+        case TextType::Code:
+            return LeafNode("code", myText);
+            break;
+        case TextType::Link:
+            return LeafNode("a", myText, {"a", std::pair{"href", myText}});
+            break;
+        case TextType::Image:
+            return LeafNode("img", "", {"img", {{"src", ""}, {"alt", ""}}});
+            break;
+        default:
+            throw std::invalid_argument("TextType is not one of the allowed types.");
+            break;
+    }
+}

@@ -2,6 +2,9 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <stdexcept>
+
+#include "leafnode.hpp"
 
 enum class TextType
 {
@@ -25,4 +28,6 @@ public:
 
     bool equals(const TextNode& other);
     std::string stringRepresentation();
+
+    LeafNode textNodeToHTMLNode();
 };
