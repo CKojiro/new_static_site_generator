@@ -24,6 +24,7 @@ private:
     std::string myUrl;
 
 public:
+    TextNode(std::string theText, TextType theTextType);
     TextNode(std::string theText, TextType theTextType, std::string theUrl);
 
     bool equals(const TextNode& other);

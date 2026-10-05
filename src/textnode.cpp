@@ -1,6 +1,12 @@
 
 #include "textnode.hpp"
 
+TextNode::TextNode(std::string theText, TextType theTextType)
+{
+    myText = theText;
+    myTextType = theTextType;
+}
+
 TextNode::TextNode(std::string theText, TextType theTextType, std::string theUrl)
 {
     myText = theText;
@@ -87,10 +93,20 @@ std::vector<TextNode> TextNode::splitNodesDelimiter(std::vector<TextNode> oldNod
 
     for (TextNode node : oldNodes)
     {
-        for (char c : node.myText)
-        {
-            
-        }
+        if (node.myText.find(delimiter) == std::string::npos)
+            throw std::invalid_argument("Delimiter was not found");
+        
+        int start = node.myText.find(delimiter) + 1;
+        int end = node.myText.find(delimiter, start + 1);
+        int length = end - start - 1;
+
+        std::string firstNode = node.myText.substr(0, start - 1);
+        std::string splitNode = node.myText.substr(start, length);
+        std::string thirdNode = node.myText.substr(end + 1, node.myText.length());
+
+        newNodes.push_back(TextNode(firstNode, TextType::Text));
+        newNodes.push_back(TextNode(splitNode, textType));
+        newNodes.push_back(TextNode(thirdNode, TextType::Text));
     }
 
     return newNodes;
