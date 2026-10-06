@@ -34,6 +34,26 @@ TEST_CASE("testing TextNode stringRepresentation() function")
     CHECK(testSix.stringRepresentation() == "TextNode(This is the image one, image, https://image.com)");
 }
 
+TEST_CASE("testing TextNode splitNodesDelimiter() function")
+{
+    TextNode nodeOne("This is text with a `code block` word", TextType::Text);
+    std::vector<TextNode> nodeOneSplit = {TextNode("This is text with a ", TextType::Text),
+        TextNode("code block", TextType::Code),
+        TextNode(" word", TextType::Text)};
+
+    TextNode node1("This is `code`", TextType::Text);
+    TextNode node2("This is `code` and `more`", TextType::Text);
+    TextNode node3("`code`", TextType::Text);
+    TextNode node4("plain text", TextType::Text);
+    TextNode node5("This is `unclosed", TextType::Text);
+    TextNode node6("", TextType::Text);
+    std::vector<TextNode> nodesTwo = {node1, node2, node3, node4, node5, node6};
+    std::vector<TextNode> nodesTwoSplit = {};
+
+    CHECK(nodeOne.splitNodesDelimiter({nodeOne}, "`", TextType::Code) == nodeOneSplit);
+    CHECK(node1.splitNodesDelimiter(nodesTwo, "`", TextType::Code) == nodesTwoSplit);
+}
+
 TEST_CASE("testing ParentNode toHTML() function with children")
 {
     LeafNode childNode("span", "child");
