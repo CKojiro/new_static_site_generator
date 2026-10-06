@@ -91,38 +91,42 @@ std::vector<TextNode> TextNode::splitNodesDelimiter(
     std::string delimiter, TextType textType)
 {
     std::vector<TextNode> newNodes;
-    TextType currentType = TextType::Text;
-    size_t position = 0;
 
     for (const TextNode& node : oldNodes)
     {
-        auto start = node.myText.find(delimiter) + 1;
-
-        if (node.myText.find(delimiter, start + 1) == std::string::npos)
-            throw std::invalid_argument("No matching delimiter was not found.");
-
-        auto end = node.myText.find(delimiter, start + 1);
-        int length = end - start - 1;
+        size_t position = 0;
+        TextType currentType = TextType::Text;
 
         while (position < node.myText.length())
         {
-            
+            auto index = node.myText.find(delimiter, position);
 
-            if (currentType == TextType::Text)
-                currentType = textType;
+            if (index == std::string::npos)
+            {
+                if (currentType == textType)
+                {
+                    throw std::invalid_argument("Missing second delimiter.");
+                }
+                else
+                {
+                    newNodes.push_back(TextNode(node.myText.substr(position), TextType::Text));
+                    break;
+                }
+            }
             else
-                currentType = TextType::Text;
+            {
+                std::string text = node.myText.substr(position, index - position);
 
-            position++;
+                newNodes.push_back(TextNode(text, currentType));
+
+                position = index + delimiter.length();
+
+                if (currentType == TextType::Text)
+                    currentType = textType;
+                else
+                    currentType = TextType::Text;
+            }
         }
-
-        std::string firstNode = node.myText.substr(0, start - 1);
-        std::string splitNode = node.myText.substr(start, length);
-        std::string thirdNode = node.myText.substr(end + 1);
-
-        newNodes.push_back(TextNode(firstNode, TextType::Text));
-        newNodes.push_back(TextNode(splitNode, textType));
-        newNodes.push_back(TextNode(thirdNode, TextType::Text));
     }
 
     return newNodes;
