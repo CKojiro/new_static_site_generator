@@ -54,6 +54,34 @@ TEST_CASE("testing TextNode splitNodesDelimiter() function")
     CHECK(node1.splitNodesDelimiter(nodesTwo, "`", TextType::Code) == nodesTwoSplit);
 }
 
+TEST_CASE("testing TextNode extractMarkdownImages() function")
+{
+    std::string text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)";
+
+    TextNode node("This", TextType::Text);
+
+    std::map<std::string, std::string> theMap = {{"rick roll", "https://i.imgur.com/aKaOqIh.gif"},
+        {"obi wan", "https://i.imgur.com/fJRm4Vk.jpeg"}};
+
+    std::map<std::string, std::string> otherMap = {{"image", "https://i.imgur.com/zjjcJKZ.png"}};
+
+    CHECK(node.extractMarkdownImages(text) == theMap);
+    CHECK(node.extractMarkdownImages("This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)")
+        == otherMap);
+}
+
+TEST_CASE("testing TextNode extractMarkdownLinks() function")
+{
+    std::string text = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)";
+
+    TextNode node("This", TextType::Text);
+
+    std::map<std::string, std::string> theMap = {{"to boot dev", "https://www.boot.dev"},
+        {"to youtube", "https://www.youtube.com/@bootdotdev"}};
+    
+    CHECK(node.extractMarkdownLinks(text) == theMap);
+}
+
 TEST_CASE("testing ParentNode toHTML() function with children")
 {
     LeafNode childNode("span", "child");
