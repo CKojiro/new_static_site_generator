@@ -131,3 +131,47 @@ std::vector<TextNode> TextNode::splitNodesDelimiter(
 
     return newNodes;
 }
+
+std::map<std::string, std::string> TextNode::extractMarkdownImages(std::string theText)
+{
+    std::map<std::string, std::string> output;
+
+    std::regex patternOne(R"(!\[([^\]]+)\]\(([^)]+)\))");
+
+    auto markdownBegin = std::sregex_iterator(theText.begin(), theText.end(), patternOne);
+    auto markdownEnd = std::sregex_iterator();
+
+    for (std::sregex_iterator i = markdownBegin; i != markdownEnd; i++)
+    {
+        std::smatch match = *i;
+        
+        std::string textOne = match[1].str();
+        std::string textTwo = match[2].str();
+
+        output.emplace(textOne, textTwo);
+    }
+
+    return output;
+}
+
+std::map<std::string, std::string> TextNode::extractMarkdownLinks(std::string theText)
+{
+    std::map<std::string, std::string> output;
+
+    std::regex patternOne(R"(\[([^\]]+)\]\(([^)]+)\))");
+
+    auto markdownBegin = std::sregex_iterator(theText.begin(), theText.end(), patternOne);
+    auto markdownEnd = std::sregex_iterator();
+
+    for (std::sregex_iterator i = markdownBegin; i != markdownEnd; i++)
+    {
+        std::smatch match = *i;
+        
+        std::string textOne = match[1].str();
+        std::string textTwo = match[2].str();
+
+        output.emplace(textOne, textTwo);
+    }
+
+    return output;
+}

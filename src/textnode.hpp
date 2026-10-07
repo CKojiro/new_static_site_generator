@@ -1,4 +1,5 @@
 
+#include <regex>
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -33,4 +34,6 @@ public:
     LeafNode textNodeToHTMLNode();
     std::vector<TextNode> splitNodesDelimiter(const std::vector<TextNode>& oldNodes,
         std::string delimiter, TextType textType);
+    std::map<std::string, std::string> extractMarkdownImages(std::string theText);
+    std::map<std::string, std::string> extractMarkdownLinks(std::string theText);
 };
