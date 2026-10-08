@@ -82,6 +82,32 @@ TEST_CASE("testing TextNode extractMarkdownLinks() function")
     CHECK(node.extractMarkdownLinks(text) == theMap);
 }
 
+TEST_CASE("testing TextNode splitNodesImage() function")
+{
+    TextNode node("This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",
+        TextType::Text);
+
+    std::vector<TextNode> newNodes = {TextNode("This is text with an ", TextType::Text),
+        TextNode("image", TextType::Image, "https://i.imgur.com/zjjcJKZ.png"),
+        TextNode(" and another ", TextType::Text),
+        TextNode("second image", TextType::Image, "https://i.imgur.com/3elNhQu.png")};
+
+    CHECK(node.splitNodesImage(node) == newNodes);
+}
+
+TEST_CASE("testing TextNode splitNodesLink() function")
+{
+    TextNode node("This is a link to [google](https://www.google.com) and [youtube](https://www.youtube.com)",
+        TextType::Text);
+
+    std::vector<TextNode> newNodes = {TextNode("This is a link to ", TextType::Text),
+        TextNode("google", TextType::Link, "https://www.google.com"),
+        TextNode(" and ", TextType::Text),
+        TextNode("youtube", TextType::Link, "https://www.youtube.com")};
+
+    CHECK(node.splitNodesImage(node) == newNodes);
+}
+
 TEST_CASE("testing ParentNode toHTML() function with children")
 {
     LeafNode childNode("span", "child");
