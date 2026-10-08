@@ -34,6 +34,10 @@ public:
     LeafNode textNodeToHTMLNode();
     std::vector<TextNode> splitNodesDelimiter(const std::vector<TextNode>& oldNodes,
         std::string delimiter, TextType textType);
+    
     std::map<std::string, std::string> extractMarkdownImages(std::string theText);
     std::map<std::string, std::string> extractMarkdownLinks(std::string theText);
+
+    std::vector<TextNode> splitNodesImage(const std::vector<TextNode>& oldNodes);
+    std::vector<TextNode> splitNodesLink(const std::vector<TextNode>& oldNodes);
 };

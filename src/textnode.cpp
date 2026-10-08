@@ -175,3 +175,85 @@ std::map<std::string, std::string> TextNode::extractMarkdownLinks(std::string th
 
     return output;
 }
+
+std::vector<TextNode> TextNode::splitNodesImage(const std::vector<TextNode>& oldNodes)
+{
+    std::vector<TextNode> output;
+
+    std::regex pattern(R"(!\[([^\]]+)\]\(([^)]+)\))");
+
+    for (const auto& node : oldNodes)
+    {
+        size_t position = 0;
+
+        auto matchesBegin = std::sregex_iterator(node.myText.begin(),
+            node.myText.end(), pattern);
+        auto matchesEnd = std::sregex_iterator();
+
+        for (std::sregex_iterator i = matchesBegin; i != matchesEnd; i++)
+        {
+            std::smatch match = *i;
+
+            auto index = match.position();
+
+            std::string textOne = node.myText.substr(position, index - position);
+            std::string textTwo = match[1].str();
+            std::string textThree = match[2].str();
+
+            output.push_back(TextNode(textOne, TextType::Text));
+            output.push_back(TextNode(textTwo, TextType::Link, textThree));
+
+            position = match.position() + match.length();
+        }
+
+        std::string finalText = node.myText.substr(position);
+
+        if (!finalText.empty())
+        {
+            output.push_back(TextNode(finalText, TextType::Text));
+        }
+    }
+
+    return output;
+}
+
+std::vector<TextNode> TextNode::splitNodesLink(const std::vector<TextNode>& oldNodes)
+{
+    std::vector<TextNode> output;
+
+    std::regex pattern(R"(\[([^\]]+)\]\(([^)]+)\))");
+
+    for (const auto& node : oldNodes)
+    {
+        size_t position = 0;
+
+        auto matchesBegin = std::sregex_iterator(node.myText.begin(),
+            node.myText.end(), pattern);
+        auto matchesEnd = std::sregex_iterator();
+
+        for (std::sregex_iterator i = matchesBegin; i != matchesEnd; i++)
+        {
+            std::smatch match = *i;
+
+            auto index = match.position();
+
+            std::string textOne = node.myText.substr(position, index - position);
+            std::string textTwo = match[1].str();
+            std::string textThree = match[2].str();
+
+            output.push_back(TextNode(textOne, TextType::Text));
+            output.push_back(TextNode(textTwo, TextType::Link, textThree));
+
+            position = match.position() + match.length();
+        }
+
+        std::string finalText = node.myText.substr(position);
+
+        if (!finalText.empty())
+        {
+            output.push_back(TextNode(finalText, TextType::Text));
+        }
+    }
+
+    return output;
+}
