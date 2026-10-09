@@ -257,3 +257,70 @@ std::vector<TextNode> TextNode::splitNodesLink(const std::vector<TextNode>& oldN
 
     return output;
 }
+
+std::vector<TextNode> TextNode::textToTextNode(std::string theText)
+{
+    std::vector<TextNode> output;
+    char previous = '\0';
+    int position = 0;
+    int index = 0;
+
+    for (char c : theText)
+    {
+        switch (c)
+        {
+            case '*':
+                std::string text = theText.substr(position, index);
+                output.push_back(TextNode(text, TextType::Text));
+                position = index;
+                index = theText.find('*', position + 2);
+                text = theText.substr(position, index);
+                output.push_back(TextNode(text, TextType::Bold));
+                continue;
+            case '_':
+                std::string text = theText.substr(position, index);
+                output.push_back(TextNode(text, TextType::Text));
+                position = index;
+                index = theText.find('_', position + 1);
+                text = theText.substr(position, index);
+                output.push_back(TextNode(text, TextType::Italic));
+                continue;
+            case '`':
+                std::string text = theText.substr(position, index);
+                output.push_back(TextNode(text, TextType::Text));
+                position = index;
+                index = theText.find('`', position + 1);
+                text = theText.substr(position, index);
+                output.push_back(TextNode(text, TextType::Code));
+                continue;
+            case '[':
+                if (previous == '!')
+                {
+                    std::vector<TextNode> newNodes = splitNodesImage();
+
+                    for (TextNode node : newNodes)
+                    {
+                        output.push_back(node);
+                    }
+                }
+                else
+                {
+                    std::vector<TextNode> newNodes = splitNodesLink();
+
+                    for (TextNode node : newNodes)
+                    {
+                        output.push_back(node);
+                    }
+                }
+
+                continue;
+            default:
+                continue;
+        }
+
+        previous = c;
+        index++;
+    }
+
+    return output;
+}
