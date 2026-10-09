@@ -261,66 +261,82 @@ std::vector<TextNode> TextNode::splitNodesLink(const std::vector<TextNode>& oldN
 std::vector<TextNode> TextNode::textToTextNode(std::string theText)
 {
     std::vector<TextNode> output;
+    std::vector<TextNode> firstRun;
+    std::vector<TextNode> secondRun;
     char previous = '\0';
     int position = 0;
-    int index = 0;
+    int i = 0;
+    std::string text = "";
 
-    for (char c : theText)
+    for (i = 0; i < theText.length(); i++)
     {
-        switch (c)
+        switch (theText[i])
         {
             case '*':
-                std::string text = theText.substr(position, index);
-                output.push_back(TextNode(text, TextType::Text));
-                position = index;
-                index = theText.find('*', position + 2);
-                text = theText.substr(position, index);
-                output.push_back(TextNode(text, TextType::Bold));
+            {
+                text = theText.substr(position, i - position);
+                
+                if (!text.empty())
+                    firstRun.push_back(TextNode(text, TextType::Text));
+
+                position = i;
+                i = theText.find('*', position + 2);
+                text = theText.substr(position + 2, i - position);
+                firstRun.push_back(TextNode(text, TextType::Bold));
+                i += 2;
                 continue;
+            }
             case '_':
-                std::string text = theText.substr(position, index);
-                output.push_back(TextNode(text, TextType::Text));
-                position = index;
-                index = theText.find('_', position + 1);
-                text = theText.substr(position, index);
-                output.push_back(TextNode(text, TextType::Italic));
+            {
+                text = theText.substr(position, i - position);
+
+                if (!text.empty())
+                    firstRun.push_back(TextNode(text, TextType::Text));
+
+                position = i;
+                i = theText.find('_', position + 1);
+                text = theText.substr(position + 1, i - position);
+                firstRun.push_back(TextNode(text, TextType::Italic));
+                i++;
                 continue;
+            }
             case '`':
-                std::string text = theText.substr(position, index);
-                output.push_back(TextNode(text, TextType::Text));
-                position = index;
-                index = theText.find('`', position + 1);
-                text = theText.substr(position, index);
-                output.push_back(TextNode(text, TextType::Code));
+            {
+                text = theText.substr(position, i - position);
+                
+                if (!text.empty())
+                    firstRun.push_back(TextNode(text, TextType::Text));
+                
+                position = i;
+                i = theText.find('`', position + 1);
+                text = theText.substr(position + 1, i - position);
+                firstRun.push_back(TextNode(text, TextType::Code));
+                i++;
                 continue;
-            case '[':
-                if (previous == '!')
-                {
-                    std::vector<TextNode> newNodes = splitNodesImage();
-
-                    for (TextNode node : newNodes)
-                    {
-                        output.push_back(node);
-                    }
-                }
-                else
-                {
-                    std::vector<TextNode> newNodes = splitNodesLink();
-
-                    for (TextNode node : newNodes)
-                    {
-                        output.push_back(node);
-                    }
-                }
-
-                continue;
+            }
             default:
                 continue;
         }
-
-        previous = c;
-        index++;
+            
+        previous = theText[i];
     }
+
+    std::vector<TextNode> newNodes = splitNodesImage(firstRun);
+
+    for (TextNode node : newNodes)
+    {
+        secondRun.push_back(node);
+    }
+
+    std::vector<TextNode> newNodes = splitNodesLink(secondRun);
+
+    for (TextNode node : newNodes)
+    {
+        output.push_back(node);
+    }
+
+    text = theText.substr(i);
+    output.push_back(TextNode(text, TextType::Text));
 
     return output;
 }
