@@ -267,8 +267,8 @@ std::vector<TextNode> TextNode::textToTextNode(std::string theText)
     std::vector<TextNode> output;
     std::vector<TextNode> firstRun;
     std::vector<TextNode> secondRun;
-    int position = 0;
-    int i = 0;
+    std::string::size_type position = 0;
+    std::string::size_type i = 0;
     std::string text = "";
 
     while (i < theText.length())
@@ -277,26 +277,39 @@ std::vector<TextNode> TextNode::textToTextNode(std::string theText)
         {
             case '*':
             {
-                text = theText.substr(position, i - position);
-                
-                if (!text.empty())
-                    firstRun.push_back(TextNode(text, TextType::Text));
-
-                position = i;
-                auto closing = theText.find('*', position + 2);
-
-                if (closing == std::string::npos)
+                if (theText[i + 1] == '*' && i + 1 < theText.length())
                 {
+                    text = theText.substr(position, i - position);
+                
+                    if (!text.empty())
+                        firstRun.push_back(TextNode(text, TextType::Text));
+
+                    position = i;
+                    auto closing = theText.find('*', position + 2);
+
+                    if (closing == std::string::npos)
+                    {
+                        throw std::invalid_argument("Closing delimiter not found.");
+                    }
+
+                    i = theText.find('*', position + 2);
+                    text = theText.substr(position + 2, i - (position + 2));
+                    firstRun.push_back(TextNode(text, TextType::Bold));
+                    i += 2;
+                    position = i;
+                    continue;
+                }
+                else
+                {
+                    text = theText.substr(position, i - position);
+                
+                    if (!text.empty())
+                        firstRun.push_back(TextNode(text, TextType::Text));
+
                     i++;
                     continue;
                 }
-
-                i = theText.find('*', position + 2);
-                text = theText.substr(position + 2, i - (position + 2));
-                firstRun.push_back(TextNode(text, TextType::Bold));
-                i += 2;
-                position = i;
-                continue;
+                
             }
             case '_':
             {
@@ -310,8 +323,7 @@ std::vector<TextNode> TextNode::textToTextNode(std::string theText)
 
                 if (closing == std::string::npos)
                 {
-                    i++;
-                    continue;
+                    throw std::invalid_argument("Closing delimiter not found.");
                 }
 
                 i = theText.find('_', position + 1);
@@ -333,8 +345,7 @@ std::vector<TextNode> TextNode::textToTextNode(std::string theText)
 
                 if (closing == std::string::npos)
                 {
-                    i++;
-                    continue;
+                    throw std::invalid_argument("Closing delimiter not found.");
                 }
                 
                 i = theText.find('`', position + 1);
@@ -348,9 +359,12 @@ std::vector<TextNode> TextNode::textToTextNode(std::string theText)
                 i++;
                 continue;
         }
-        
-        i++;
     }
+
+    std::string extraText = theText.substr(position);
+
+    if (!extraText.empty())
+        firstRun.push_back(TextNode(extraText, TextType::Text));
 
     std::vector<TextNode> newNodes = splitNodesImage(firstRun);
 
