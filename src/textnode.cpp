@@ -200,7 +200,9 @@ std::vector<TextNode> TextNode::splitNodesImage(const std::vector<TextNode>& old
             std::string textTwo = match[1].str();
             std::string textThree = match[2].str();
 
-            output.push_back(TextNode(textOne, TextType::Text));
+            if (!textOne.empty())
+                output.push_back(TextNode(textOne, TextType::Text));
+            
             output.push_back(TextNode(textTwo, TextType::Link, textThree));
 
             position = match.position() + match.length();
@@ -241,7 +243,9 @@ std::vector<TextNode> TextNode::splitNodesLink(const std::vector<TextNode>& oldN
             std::string textTwo = match[1].str();
             std::string textThree = match[2].str();
 
-            output.push_back(TextNode(textOne, TextType::Text));
+            if (!textOne.empty())
+                output.push_back(TextNode(textOne, TextType::Text));
+
             output.push_back(TextNode(textTwo, TextType::Link, textThree));
 
             position = match.position() + match.length();
@@ -263,12 +267,11 @@ std::vector<TextNode> TextNode::textToTextNode(std::string theText)
     std::vector<TextNode> output;
     std::vector<TextNode> firstRun;
     std::vector<TextNode> secondRun;
-    char previous = '\0';
     int position = 0;
     int i = 0;
     std::string text = "";
 
-    for (i = 0; i < theText.length(); i++)
+    while (i < theText.length())
     {
         switch (theText[i])
         {
@@ -280,10 +283,19 @@ std::vector<TextNode> TextNode::textToTextNode(std::string theText)
                     firstRun.push_back(TextNode(text, TextType::Text));
 
                 position = i;
+                auto closing = theText.find('*', position + 2);
+
+                if (closing == std::string::npos)
+                {
+                    i++;
+                    continue;
+                }
+
                 i = theText.find('*', position + 2);
-                text = theText.substr(position + 2, i - position);
+                text = theText.substr(position + 2, i - (position + 2));
                 firstRun.push_back(TextNode(text, TextType::Bold));
                 i += 2;
+                position = i;
                 continue;
             }
             case '_':
@@ -294,10 +306,19 @@ std::vector<TextNode> TextNode::textToTextNode(std::string theText)
                     firstRun.push_back(TextNode(text, TextType::Text));
 
                 position = i;
+                auto closing = theText.find('_', position + 1);
+
+                if (closing == std::string::npos)
+                {
+                    i++;
+                    continue;
+                }
+
                 i = theText.find('_', position + 1);
-                text = theText.substr(position + 1, i - position);
+                text = theText.substr(position + 1, i - (position + 1));
                 firstRun.push_back(TextNode(text, TextType::Italic));
                 i++;
+                position = i;
                 continue;
             }
             case '`':
@@ -308,17 +329,27 @@ std::vector<TextNode> TextNode::textToTextNode(std::string theText)
                     firstRun.push_back(TextNode(text, TextType::Text));
                 
                 position = i;
+                auto closing = theText.find('`', position + 1);
+
+                if (closing == std::string::npos)
+                {
+                    i++;
+                    continue;
+                }
+                
                 i = theText.find('`', position + 1);
-                text = theText.substr(position + 1, i - position);
+                text = theText.substr(position + 1, i - (position + 1));
                 firstRun.push_back(TextNode(text, TextType::Code));
                 i++;
+                position = i;
                 continue;
             }
             default:
+                i++;
                 continue;
         }
-            
-        previous = theText[i];
+        
+        i++;
     }
 
     std::vector<TextNode> newNodes = splitNodesImage(firstRun);
@@ -328,15 +359,12 @@ std::vector<TextNode> TextNode::textToTextNode(std::string theText)
         secondRun.push_back(node);
     }
 
-    std::vector<TextNode> newNodes = splitNodesLink(secondRun);
+    newNodes = splitNodesLink(secondRun);
 
     for (TextNode node : newNodes)
     {
         output.push_back(node);
     }
-
-    text = theText.substr(i);
-    output.push_back(TextNode(text, TextType::Text));
 
     return output;
 }
