@@ -277,7 +277,7 @@ std::vector<TextNode> TextNode::textToTextNode(std::string theText)
         {
             case '*':
             {
-                if (theText[i + 1] == '*' && i + 1 < theText.length())
+                if (i + 1 < theText.length() && theText[i + 1] == '*')
                 {
                     text = theText.substr(position, i - position);
                 
@@ -285,14 +285,14 @@ std::vector<TextNode> TextNode::textToTextNode(std::string theText)
                         firstRun.push_back(TextNode(text, TextType::Text));
 
                     position = i;
-                    auto closing = theText.find('*', position + 2);
+                    auto closing = theText.find("**", position + 2);
 
                     if (closing == std::string::npos)
                     {
                         throw std::invalid_argument("Closing delimiter not found.");
                     }
 
-                    i = theText.find('*', position + 2);
+                    i = closing;
                     text = theText.substr(position + 2, i - (position + 2));
                     firstRun.push_back(TextNode(text, TextType::Bold));
                     i += 2;
@@ -301,11 +301,6 @@ std::vector<TextNode> TextNode::textToTextNode(std::string theText)
                 }
                 else
                 {
-                    text = theText.substr(position, i - position);
-                
-                    if (!text.empty())
-                        firstRun.push_back(TextNode(text, TextType::Text));
-
                     i++;
                     continue;
                 }
@@ -326,7 +321,7 @@ std::vector<TextNode> TextNode::textToTextNode(std::string theText)
                     throw std::invalid_argument("Closing delimiter not found.");
                 }
 
-                i = theText.find('_', position + 1);
+                i = closing;
                 text = theText.substr(position + 1, i - (position + 1));
                 firstRun.push_back(TextNode(text, TextType::Italic));
                 i++;
@@ -348,7 +343,7 @@ std::vector<TextNode> TextNode::textToTextNode(std::string theText)
                     throw std::invalid_argument("Closing delimiter not found.");
                 }
                 
-                i = theText.find('`', position + 1);
+                i = closing;
                 text = theText.substr(position + 1, i - (position + 1));
                 firstRun.push_back(TextNode(text, TextType::Code));
                 i++;
