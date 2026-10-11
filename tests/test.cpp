@@ -84,28 +84,54 @@ TEST_CASE("testing TextNode extractMarkdownLinks() function")
 
 TEST_CASE("testing TextNode splitNodesImage() function")
 {
-    TextNode node("This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",
-        TextType::Text);
+    TextNode node("This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)", TextType::Text);
 
-    std::vector<TextNode> newNodes = {TextNode("This is text with an ", TextType::Text),
+    std::vector<TextNode> newNodes =
+    {
+        TextNode("This is text with an ", TextType::Text),
         TextNode("image", TextType::Image, "https://i.imgur.com/zjjcJKZ.png"),
         TextNode(" and another ", TextType::Text),
-        TextNode("second image", TextType::Image, "https://i.imgur.com/3elNhQu.png")};
+        TextNode("second image", TextType::Image, "https://i.imgur.com/3elNhQu.png")
+    };
 
     CHECK(node.splitNodesImage(node) == newNodes);
 }
 
 TEST_CASE("testing TextNode splitNodesLink() function")
 {
-    TextNode node("This is a link to [google](https://www.google.com) and [youtube](https://www.youtube.com)",
-        TextType::Text);
+    TextNode node("This is a link to [google](https://www.google.com) and [youtube](https://www.youtube.com)", TextType::Text);
 
-    std::vector<TextNode> newNodes = {TextNode("This is a link to ", TextType::Text),
+    std::vector<TextNode> newNodes =
+    {
+        TextNode("This is a link to ", TextType::Text),
         TextNode("google", TextType::Link, "https://www.google.com"),
         TextNode(" and ", TextType::Text),
-        TextNode("youtube", TextType::Link, "https://www.youtube.com")};
+        TextNode("youtube", TextType::Link, "https://www.youtube.com")
+    };
 
-    CHECK(node.splitNodesImage(node) == newNodes);
+    CHECK(TextNode.splitNodesImage(node) == newNodes);
+}
+
+TEST_CASE("testing TextNode textToTextNode() function")
+{
+    TextNode node("This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)", TextType::Text);
+    std::string text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)";
+
+    std::vector<TextNode> nodeList =
+    {
+        TextNode("This is ", TextType::Text),
+        TextNode("text", TextType::Bold),
+        TextNode(" with an ", TextType::Text),
+        TextNode("italic", TextType::Italic),
+        TextNode(" word and a ", TextType::Text),
+        TextNode("code block", TextType::Code),
+        TextNode(" and an ", TextType::Text),
+        TextNode("obi wan image", TextType::Image, "https://i.imgur.com/fJRm4Vk.jpeg"),
+        TextNode(" and a ", TextType::Text),
+        TextNode("link", TextType::Link, "https://boot.dev")
+    };
+
+    CHECK(node.textToTextNode(text) == nodeList);
 }
 
 TEST_CASE("testing ParentNode toHTML() function with children")
