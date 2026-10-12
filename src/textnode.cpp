@@ -377,3 +377,21 @@ std::vector<TextNode> TextNode::textToTextNode(std::string theText)
 
     return output;
 }
+
+std::vector<std::string> TextNode::markdownToBlocks(std::string theMarkdown)
+{
+    std::vector<std::string> output;
+
+    std::stringstream ss(theMarkdown);
+    std::string token;
+    size_t position;
+
+    auto delimiter = theMarkdown.find("\n\n", position);
+
+    while (std::getline(ss, token, delimiter))
+    {
+        output.push_back(token);
+    }
+
+    return output;
+}
