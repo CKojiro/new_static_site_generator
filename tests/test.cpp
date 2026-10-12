@@ -134,6 +134,30 @@ TEST_CASE("testing TextNode textToTextNode() function")
     CHECK(node.textToTextNode(text) == nodeList);
 }
 
+TEST_CASE("testing TextNode markdownToBlocks() function")
+{
+    TextNode node("Hi", TextType::Text);
+
+    std::string md = R"(
+    This is **bolded** paragraph
+    
+    This is another paragraph with _italic_ text and `code` here
+    This is the same paragraph on a new line
+
+    - This is a list
+    - with items
+    )";
+
+    std::vector<std::string> blocks = 
+    {
+        "This is **bolded paragraph",
+        "This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
+        "- This is a list\n- with items"
+    };
+
+    CHECK(node.markdownToBlocks(md) == blocks);
+}
+
 TEST_CASE("testing ParentNode toHTML() function with children")
 {
     LeafNode childNode("span", "child");

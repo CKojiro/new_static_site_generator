@@ -382,16 +382,18 @@ std::vector<std::string> TextNode::markdownToBlocks(std::string theMarkdown)
 {
     std::vector<std::string> output;
 
-    std::stringstream ss(theMarkdown);
-    std::string token;
-    size_t position;
+    std::string delimiter = "\n\n";
+    size_t start = 0;
+    size_t end = theMarkdown.find(delimiter);
 
-    auto delimiter = theMarkdown.find("\n\n", position);
-
-    while (std::getline(ss, token, delimiter))
+    while (end != std::string::npos)
     {
-        output.push_back(token);
+        output.push_back(theMarkdown.substr(start, end - start));
+        start = end + delimiter.length();
+        end = theMarkdown.find(delimiter, start);
     }
+
+    output.push_back(theMarkdown.substr(start));
 
     return output;
 }
