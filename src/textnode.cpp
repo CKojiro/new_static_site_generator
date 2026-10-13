@@ -400,16 +400,24 @@ std::vector<std::string> TextNode::markdownToBlocks(std::string theMarkdown)
 
 BlockType TextNode::blockToBlockType(std::string theText)
 {
-    std::regex headingPattern(R"(^#{1,6})");
-    std::regex codePattern(R"(^```[\s\(\S\)]*?```$)");
-    std::regex quotePattern(R"(^> ?)");
-    std::regex unorderedListPattern(R"(^-\s)");
-    std::regex orderedListPattern(R"(^(\d+)\.\s)");
+    int typeNum = -1;
 
     std::vector<std::regex> patterns =
     {
-        
+        std::regex(R"(^#{1,6})"),
+        std::regex(R"(^```[\s\S]*?```$)"),
+        std::regex(R"(^> ?)"),
+        std::regex(R"(^-\s)"),
+        std::regex(R"(^(\d+)\.\s)")
     };
+
+    for (std::size_t i = 0; i < patterns.size(); i++)
+    {
+        if (std::regex_search(theText, patterns[i]))
+        {
+            return static_cast<BlockType>(i);
+        }
+    }
 
     return BlockType::Paragraph;
 }

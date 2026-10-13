@@ -19,12 +19,12 @@ enum class TextType
 
 enum class BlockType
 {
-    Paragraph,
     Heading,
     Code,
     Quote,
     UnorderedList,
-    OrderedList
+    OrderedList,
+    Paragraph
 };
 
 class TextNode
