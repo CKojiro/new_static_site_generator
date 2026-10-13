@@ -17,6 +17,16 @@ enum class TextType
     Image
 };
 
+enum class BlockType
+{
+    Paragraph,
+    Heading,
+    Code,
+    Quote,
+    UnorderedList,
+    OrderedList
+};
+
 class TextNode
 {
 private:
@@ -44,4 +54,6 @@ public:
     std::vector<TextNode> textToTextNode(std::string theText);
 
     std::vector<std::string> markdownToBlocks(std::string theMarkdown);
+
+    BlockType blockToBlockType(std::string theText);
 };

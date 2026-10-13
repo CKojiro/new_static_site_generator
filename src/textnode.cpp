@@ -397,3 +397,19 @@ std::vector<std::string> TextNode::markdownToBlocks(std::string theMarkdown)
 
     return output;
 }
+
+BlockType TextNode::blockToBlockType(std::string theText)
+{
+    std::regex headingPattern(R"(^#{1,6})");
+    std::regex codePattern(R"(^```[\s\(\S\)]*?```$)");
+    std::regex quotePattern(R"(^> ?)");
+    std::regex unorderedListPattern(R"(^-\s)");
+    std::regex orderedListPattern(R"(^(\d+)\.\s)");
+
+    std::vector<std::regex> patterns =
+    {
+        
+    };
+
+    return BlockType::Paragraph;
+}
