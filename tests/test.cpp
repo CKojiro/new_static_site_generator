@@ -158,6 +158,19 @@ TEST_CASE("testing TextNode markdownToBlocks() function")
     CHECK(node.markdownToBlocks(md) == blocks);
 }
 
+TEST_CASE("testing TextNode blockToBlockType() function")
+{
+    std::string paragraph = "This is a paragraph";
+    std::string heading = "###### This is a heading";
+    std::string code = "```This is code```";
+
+    TextNode node("Hi", TextType::Text);
+    
+    CHECK(node.blockToBlockType(paragraph) == BlockType::Paragraph);
+    CHECK(node.blockToBlockType(heading) == BlockType::Heading);
+    CHECK(node.blockToBlockType(code) == BlockType::Code);
+}
+
 TEST_CASE("testing ParentNode toHTML() function with children")
 {
     LeafNode childNode("span", "child");
