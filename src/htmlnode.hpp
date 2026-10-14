@@ -7,6 +7,8 @@
 #include <stdexcept>
 #include <map>
 
+#include "textnode.hpp"
+
 class HTMLNode
 {
 private:
@@ -23,6 +25,8 @@ public:
     virtual std::string toHTML();
     std::string propsToHTML();
     virtual std::string stringRepresentation();
+
+    HTMLNode markdownToHTML(std::string theMarkdown);
 
     std::string getTag() const;
     std::string getValue() const;

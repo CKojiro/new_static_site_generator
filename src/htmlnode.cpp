@@ -41,6 +41,34 @@ std::string HTMLNode::stringRepresentation()
     return output.str();
 }
 
+HTMLNode HTMLNode::markdownToHTML(std::string theMarkdown)
+{
+    TextNode node("hi", TextType::Text);
+
+    std::vector<std::string> blocks = node.markdownToBlocks(theMarkdown);
+
+    for (std::string block : blocks)
+    {
+        BlockType type = node.blockToBlockType(block);
+
+        switch (type)
+        {
+            case BlockType::Heading:
+                
+            case BlockType::Code:
+
+            case BlockType::Quote:
+
+            case BlockType::UnorderedList:
+
+            case BlockType::OrderedList:
+
+            case BlockType::Paragraph:
+
+        }
+    }
+}
+
 std::string HTMLNode::getTag() const
 {
     return myTag;
