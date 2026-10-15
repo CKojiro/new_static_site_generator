@@ -41,6 +41,11 @@ std::string HTMLNode::stringRepresentation()
     return output.str();
 }
 
+std::vector<HTMLNode> HTMLNode::textToChildren(std::string theText)
+{
+
+}
+
 HTMLNode HTMLNode::markdownToHTML(std::string theMarkdown)
 {
     TextNode node("hi", TextType::Text);
@@ -50,21 +55,58 @@ HTMLNode HTMLNode::markdownToHTML(std::string theMarkdown)
     for (std::string block : blocks)
     {
         BlockType type = node.blockToBlockType(block);
+        std::string opening;
+        std::string closing;
 
         switch (type)
         {
             case BlockType::Heading:
-                
+            {
+                int num;
+
+                if ()
+                {
+
+                }
+
+                opening = "<h" + std::to_string(num) + ">";
+                closing = "</h" + std::to_string(num) + ">";
+            }
             case BlockType::Code:
+            {
+                opening = "<pre><code>";
+                closing = "</code></pre>";
 
+
+            }
             case BlockType::Quote:
+            {
+                opening = "<blockquote>";
+                closing = "</blockquote>";
 
+
+            }
             case BlockType::UnorderedList:
+            {
+                opening = "<ul>\n   ";
+                closing = "\n</ul>";
 
+
+            }
             case BlockType::OrderedList:
+            {
+                opening = "<ol>\n   ";
+                closing = "\n</ol>";
 
+                
+            }
             case BlockType::Paragraph:
+            {
+                opening = "<p>";
+                closing = "</p>";
 
+
+            }
         }
     }
 }
