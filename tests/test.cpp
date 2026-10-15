@@ -4,6 +4,7 @@
 
 #include "../src/textnode.hpp"
 #include "../src/leafnode.hpp"
+#include "../src/htmlnode.hpp"
 #include "../src/parentnode.hpp"
 //#include <catch2/catch_test_macros.hpp>
 
@@ -139,13 +140,13 @@ TEST_CASE("testing TextNode markdownToBlocks() function")
     TextNode node("Hi", TextType::Text);
 
     std::string md = R"(
-    This is **bolded** paragraph
-    
-    This is another paragraph with _italic_ text and `code` here
-    This is the same paragraph on a new line
+This is **bolded** paragraph
 
-    - This is a list
-    - with items
+This is another paragraph with _italic_ text and `code` here
+This is the same paragraph on a new line
+
+- This is a list
+- with items
     )";
 
     std::vector<std::string> blocks = 
@@ -169,6 +170,30 @@ TEST_CASE("testing TextNode blockToBlockType() function")
     CHECK(node.blockToBlockType(paragraph) == BlockType::Paragraph);
     CHECK(node.blockToBlockType(heading) == BlockType::Heading);
     CHECK(node.blockToBlockType(code) == BlockType::Code);
+}
+
+TEST_CASE("testing HTMLNode markdownToHTML() function")
+{
+    std::string md = R"(
+This is **bolded** paragraph
+text in a p
+tag here
+
+This is another paragraph with _italic_ text and `code` here
+
+)";
+
+    std::string md2 = R"(
+```
+This is text that _should_ remain
+the **same** even with inline stuff
+```
+)";
+    
+    CHECK(HTMLNode.markdownToHTML() == HTMLNode(,
+        "<div><p>This is <b>bolded</b> paragraph text in a p tag here</p><p>This is another paragraph with <i>italic</i> text and <code>code</code> here</p></div>"));
+    CHECK(HTMLNode.markdownToHTML() == HTMLNode(,
+        "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>"));
 }
 
 TEST_CASE("testing ParentNode toHTML() function with children")
