@@ -43,7 +43,18 @@ std::string HTMLNode::stringRepresentation()
 
 std::vector<HTMLNode> HTMLNode::textToChildren(std::string theText)
 {
+    std::vector<HTMLNode> children;
 
+    TextNode node("hi", TextType::Text);
+
+    std::vector<TextNode> nodeList = node.textToTextNode(theText);
+
+    for (const TextNode& tNode : nodeList)
+    {
+        children.push_back(tNode.textNodeToHTMLNode());
+    }
+
+    return children;
 }
 
 HTMLNode HTMLNode::markdownToHTML(std::string theMarkdown)
@@ -62,15 +73,20 @@ HTMLNode HTMLNode::markdownToHTML(std::string theMarkdown)
         {
             case BlockType::Heading:
             {
-                int num;
+                int num = 0;
 
-                if ()
+                for (char ch : theMarkdown)
                 {
-
+                    if (ch != '#')
+                        break;
+                    else
+                        num++;
                 }
 
                 opening = "<h" + std::to_string(num) + ">";
                 closing = "</h" + std::to_string(num) + ">";
+
+
             }
             case BlockType::Code:
             {

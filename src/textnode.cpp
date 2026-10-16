@@ -58,7 +58,7 @@ std::string TextNode::stringRepresentation()
     return output.str();
 }
 
-LeafNode TextNode::textNodeToHTMLNode()
+LeafNode TextNode::textNodeToHTMLNode() const
 {
     switch (myTextType)
     {
@@ -75,7 +75,7 @@ LeafNode TextNode::textNodeToHTMLNode()
             return LeafNode("code", myText);
             break;
         case TextType::Link:
-            return LeafNode("a", myText, {{"a", {"href", myText}}});
+            return LeafNode("a", myText, {{"a", {"href", myUrl}}});
             break;
         case TextType::Image:
             return LeafNode("img", "", {{"img", {"src", ""}}, {"img", {"alt", ""}}});
