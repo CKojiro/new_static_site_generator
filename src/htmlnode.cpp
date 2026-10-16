@@ -1,14 +1,15 @@
 
 #include "htmlnode.hpp"
 
-HTMLNode::HTMLNode(std::string theTag, std::string theValue,
-        std::vector<HTMLNode> theChildren,
-        std::map<std::string, std::pair<std::string, std::string>> theProps)
+HTMLNode::HTMLNode(std::string theTag,
+    std::string theValue,
+    std::vector<std::unique_ptr<HTMLNode>> theChildren,
+    std::map<std::string, std::pair<std::string, std::string>> theProps)
+    : myTag(std::move(theTag)),
+      myValue(std::move(theValue)),
+      myChildren(std::move(theChildren)),
+      myProps(std::move(theProps))
 {
-    myTag = theTag;
-    myValue = theValue;
-    myChildren = theChildren;
-    myProps = theProps;
 }
 
 std::string HTMLNode::toHTML()
@@ -137,7 +138,7 @@ std::string HTMLNode::getValue() const
     return myValue;
 }
 
-const std::vector<HTMLNode>& HTMLNode::getChildren() const
+const std::vector<std::unique_ptr<HTMLNode>>& HTMLNode::getChildren() const
 {
     return myChildren;
 }
