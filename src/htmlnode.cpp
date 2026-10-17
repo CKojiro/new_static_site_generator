@@ -42,9 +42,9 @@ std::string HTMLNode::stringRepresentation()
     return output.str();
 }
 
-std::vector<HTMLNode> HTMLNode::textToChildren(std::string theText)
+std::vector<std::unique_ptr<HTMLNode>> HTMLNode::textToChildren(std::string theText)
 {
-    std::vector<HTMLNode> children;
+    std::vector<std::unique_ptr<HTMLNode>> children;
 
     TextNode node("hi", TextType::Text);
 

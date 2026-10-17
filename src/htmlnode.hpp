@@ -29,7 +29,7 @@ public:
     std::string propsToHTML();
     virtual std::string stringRepresentation();
 
-    std::vector<HTMLNode> textToChildren(std::string theText);
+    std::vector<std::unique_ptr<HTMLNode>> textToChildren(std::string theText);
 
     HTMLNode markdownToHTML(std::string theMarkdown);
 
