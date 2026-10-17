@@ -35,7 +35,7 @@ public:
 
     std::string getTag() const;
     std::string getValue() const;
-    const std::vector<HTMLNode>& getChildren() const;
+    const std::vector<std::unique_ptr<HTMLNode>>& getChildren() const;
     const std::map<std::string, std::pair<std::string, std::string>>& getProps() const;
 
     void setTag(std::string theTag);

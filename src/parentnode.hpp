@@ -9,10 +9,10 @@ private:
 
 public:
     ParentNode(std::string theTag,
-        std::vector<HTMLNode> theChildren);
+        std::vector<std::unique_ptr<HTMLNode>> theChildren);
 
     ParentNode(std::string theTag,
-        std::vector<HTMLNode> theChildren,
+        std::vector<std::unique_ptr<HTMLNode>> theChildren,
         std::map<std::string, std::pair<std::string, std::string>> theProps);
 
     std::string toHTML() override;

@@ -2,13 +2,15 @@
 #include "parentnode.hpp"
 
 ParentNode::ParentNode(std::string theTag,
-    std::vector<HTMLNode> theChildren)
-    : HTMLNode(theTag, "", theChildren, {}) {}
+    std::vector<std::unique_ptr<HTMLNode>> theChildren)
+    : HTMLNode(theTag, "", theChildren, {})
+{}
 
 ParentNode::ParentNode(std::string theTag,
-    std::vector<HTMLNode> theChildren,
+    std::vector<std::unique_ptr<HTMLNode>> theChildren,
     std::map<std::string, std::pair<std::string, std::string>> theProps)
-    : HTMLNode(theTag, "", theChildren, theProps) {}
+    : HTMLNode(theTag, "", theChildren, theProps)
+{}
 
 std::string ParentNode::toHTML()
 {
@@ -28,14 +30,14 @@ std::string ParentNode::toHTML()
 
     for (const auto& node : getChildren())
     {
-        if (node.getTag() == "")
+        if (node->getTag() == "")
         {
-            output << node.getValue();
+            output << node->getValue();
         }
         else
         {
-            output << "<" << node.getTag() << ">" << node.getValue();
-            output << "</" << node.getTag() << ">";
+            output << "<" << node->getTag() << ">" << node->getValue();
+            output << "</" << node->getTag() << ">";
         }
     }
 
