@@ -72,11 +72,13 @@ HTMLNode HTMLNode::markdownToHTML(std::string theMarkdown)
 
     std::vector<std::string> blocks = node.markdownToBlocks(theMarkdown);
 
-    for (std::string block : blocks)
+    ParentNode output("div", );
+
+    for (int i = 1; i < blocks.size(); i++)
     {
-        BlockType type = node.blockToBlockType(block);
-        std::string opening;
-        std::string closing;
+        BlockType type = node.blockToBlockType(blocks[i]);
+        std::string tag;
+        std::string value;
 
         switch (type)
         {
@@ -84,18 +86,31 @@ HTMLNode HTMLNode::markdownToHTML(std::string theMarkdown)
             {
                 int num = 0;
 
-                for (char ch : theMarkdown)
+                for (char ch : blocks[i])
                 {
+                    if (num > 6)
+                        break;
+                    
                     if (ch != '#')
                         break;
                     else
                         num++;
                 }
 
-                opening = "<h" + std::to_string(num) + ">";
-                closing = "</h" + std::to_string(num) + ">";
+                tag = "h" + std::to_string(num);
 
+                size_t pos = blocks[i].find_first_not_of('#');
 
+                if (pos != std::string::npos)
+                    blocks[i].erase(0, pos);
+                else
+                    blocks[i].clear();
+
+                value = blocks[i];
+
+                LeafNode(tag, value);
+
+                break;
             }
             case BlockType::Code:
             {
@@ -103,6 +118,8 @@ HTMLNode HTMLNode::markdownToHTML(std::string theMarkdown)
                 closing = "</code></pre>";
 
 
+
+                break;
             }
             case BlockType::Quote:
             {
@@ -110,6 +127,8 @@ HTMLNode HTMLNode::markdownToHTML(std::string theMarkdown)
                 closing = "</blockquote>";
 
 
+
+                break;
             }
             case BlockType::UnorderedList:
             {
@@ -117,20 +136,26 @@ HTMLNode HTMLNode::markdownToHTML(std::string theMarkdown)
                 closing = "\n</ul>";
 
 
+
+                break;
             }
             case BlockType::OrderedList:
             {
                 opening = "<ol>\n   ";
                 closing = "\n</ol>";
 
-                
+
+
+                break;
             }
             case BlockType::Paragraph:
             {
                 opening = "<p>";
                 closing = "</p>";
 
+                
 
+                break;
             }
         }
     }
