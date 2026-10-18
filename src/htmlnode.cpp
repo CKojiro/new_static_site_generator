@@ -12,6 +12,14 @@ HTMLNode::HTMLNode(std::string theTag,
 {
 }
 
+HTMLNode::HTMLNode(HTMLNode&& theNode) noexcept
+    : HTMLNode(std::move(theNode.myTag),
+        std::move(theNode.myValue),
+        std::move(theNode.myChildren),
+        std::move(theNode.myProps))
+{
+}
+
 std::string HTMLNode::toHTML()
 {
     throw std::logic_error("Functionality not implemented!");
@@ -52,7 +60,7 @@ std::vector<std::unique_ptr<HTMLNode>> HTMLNode::textToChildren(std::string theT
 
     for (const TextNode& tNode : nodeList)
     {
-        children.push_back(tNode.textNodeToHTMLNode());
+        children.push_back(std::make_unique<LeafNode>(tNode.textNodeToHTMLNode()));
     }
 
     return children;

@@ -8,6 +8,9 @@ LeafNode::LeafNode(std::string theTag, std::string theValue,
     std::map<std::string, std::pair<std::string, std::string>> theProps)
     : HTMLNode(theTag, theValue, {}, theProps) {}
 
+LeafNode::LeafNode(LeafNode&& theNode) noexcept
+    : HTMLNode(std::move(theNode)) {}
+
 std::string LeafNode::toHTML()
 {
     if (getValue() == "")

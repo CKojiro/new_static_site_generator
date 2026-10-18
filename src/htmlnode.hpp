@@ -23,6 +23,8 @@ public:
         std::vector<std::unique_ptr<HTMLNode>> theChildren,
         std::map<std::string, std::pair<std::string, std::string>> theProps);
 
+    HTMLNode(HTMLNode&& theNode) noexcept;
+
     virtual ~HTMLNode() = default;
 
     virtual std::string toHTML();

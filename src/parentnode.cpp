@@ -3,13 +3,13 @@
 
 ParentNode::ParentNode(std::string theTag,
     std::vector<std::unique_ptr<HTMLNode>> theChildren)
-    : HTMLNode(theTag, "", theChildren, {})
+    : HTMLNode(theTag, "", std::move(theChildren), {})
 {}
 
 ParentNode::ParentNode(std::string theTag,
     std::vector<std::unique_ptr<HTMLNode>> theChildren,
     std::map<std::string, std::pair<std::string, std::string>> theProps)
-    : HTMLNode(theTag, "", theChildren, theProps)
+    : HTMLNode(theTag, "", std::move(theChildren), theProps)
 {}
 
 std::string ParentNode::toHTML()
