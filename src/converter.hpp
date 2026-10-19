@@ -1,4 +1,7 @@
 
+#pragma once
+
+#include <string>
 #include <memory>
 #include "htmlnode.hpp"
 #include "parentnode.hpp"

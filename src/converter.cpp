@@ -53,10 +53,10 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
             }
             case BlockType::Code:
             {
-                opening = "<pre><code>";
-                closing = "</code></pre>";
+                tag = "code";
+                value = ;
 
-
+                children.push_back(std::make_unique<ParentNode>("pre", ));
 
                 break;
             }
@@ -80,7 +80,7 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
                 opening = "<ul>\n   ";
                 closing = "\n</ul>";
 
-
+                children.push_back(std::make_unique<ParentNode>("ul", ));
 
                 break;
             }
@@ -89,7 +89,7 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
                 opening = "<ol>\n   ";
                 closing = "\n</ol>";
 
-
+                children.push_back(std::make_unique<ParentNode>("ol", ));
 
                 break;
             }
