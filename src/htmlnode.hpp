@@ -33,8 +33,6 @@ public:
 
     std::vector<std::unique_ptr<HTMLNode>> textToChildren(std::string theText);
 
-    HTMLNode markdownToHTML(std::string theMarkdown);
-
     std::string getTag() const;
     std::string getValue() const;
     const std::vector<std::unique_ptr<HTMLNode>>& getChildren() const;
