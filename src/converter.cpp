@@ -53,10 +53,23 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
             }
             case BlockType::Code:
             {
-                tag = "code";
-                value = ;
+                std::string content = blocks[i];
 
-                children.push_back(std::make_unique<ParentNode>("pre", ));
+                tag = "code";
+
+                if (!content.empty())
+                    content.erase(0, 4);
+
+                if (content.length() >= 3)
+                    content.erase(content.length() - 3);
+                
+                value = content;
+
+                LeafNode node(tag, content);
+
+                LeafNode node(tag, value);
+
+                children.push_back(std::make_unique<ParentNode>("pre", node));
 
                 break;
             }
@@ -77,19 +90,35 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
             }
             case BlockType::UnorderedList:
             {
-                opening = "<ul>\n   ";
-                closing = "\n</ul>";
+                std::string content = blocks[i];
 
-                children.push_back(std::make_unique<ParentNode>("ul", ));
+                tag = "li";
+
+                if (!content.empty())
+                    content.erase(0, 2);
+                
+                value = content;
+
+                LeafNode node(tag, content);
+
+                children.push_back(std::make_unique<ParentNode>("ul", node));
 
                 break;
             }
             case BlockType::OrderedList:
             {
-                opening = "<ol>\n   ";
-                closing = "\n</ol>";
+                std::string content = blocks[i];
 
-                children.push_back(std::make_unique<ParentNode>("ol", ));
+                tag = "li";
+
+                if (!content.empty())
+                    content.erase(0, 2);
+                
+                value = content;
+
+                LeafNode node(tag, content);
+
+                children.push_back(std::make_unique<ParentNode>("ol", node));
 
                 break;
             }
@@ -106,8 +135,6 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
             }
         }
     }
-
-    //HTMLNode output("div", "", std::move(children), {});
 
     return std::make_unique<ParentNode>("div", std::move(children));
 }
