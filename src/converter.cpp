@@ -65,11 +65,12 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
                 
                 value = content;
 
-                LeafNode node(tag, content);
+                std::vector<std::unique_ptr<HTMLNode>> items;
 
-                LeafNode node(tag, value);
+                items.push_back(std::make_unique<LeafNode>(tag, value));
 
-                children.push_back(std::make_unique<ParentNode>("pre", node));
+                children.push_back(
+                    std::make_unique<ParentNode>("pre", std::move(items)));
 
                 break;
             }
@@ -99,9 +100,12 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
                 
                 value = content;
 
-                LeafNode node(tag, content);
+                std::vector<std::unique_ptr<HTMLNode>> items;
 
-                children.push_back(std::make_unique<ParentNode>("ul", node));
+                items.push_back(std::make_unique<LeafNode>(tag, value));
+
+                children.push_back(
+                    std::make_unique<ParentNode>("ul", std::move(items)));
 
                 break;
             }
@@ -116,9 +120,12 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
                 
                 value = content;
 
-                LeafNode node(tag, content);
+                std::vector<std::unique_ptr<HTMLNode>> items;
 
-                children.push_back(std::make_unique<ParentNode>("ol", node));
+                items.push_back(std::make_unique<LeafNode>(tag, value));
+
+                children.push_back(
+                    std::make_unique<ParentNode>("ol", std::move(items)));
 
                 break;
             }
