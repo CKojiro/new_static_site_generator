@@ -9,7 +9,7 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
 
     std::vector<std::unique_ptr<HTMLNode>> children;
 
-    for (int i = 0; i < blocks.size(); i++)
+    for (size_t i = 0; i < blocks.size(); i++)
     {
         BlockType type = node.blockToBlockType(blocks[i]);
         std::string tag;
@@ -92,13 +92,27 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
             case BlockType::UnorderedList:
             {
                 std::string content = blocks[i];
+                std::stringstream ss(content);
+                std::stringstream os;
+                std::string line;
+                std::vector<std::string> lines;
+
+                while(std::getline(ss, line, '\n'))
+                {
+                    lines.push_back(line);
+                }
+
+                for (const auto& l : lines)
+                {
+                    if (!l.empty())
+                        l.erase(0, 2);
+                    
+                    os << l << "\n";
+                }
 
                 tag = "li";
-
-                if (!content.empty())
-                    content.erase(0, 2);
                 
-                value = content;
+                value = os.str();
 
                 std::vector<std::unique_ptr<HTMLNode>> items;
 
@@ -113,12 +127,27 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
             {
                 std::string content = blocks[i];
 
-                tag = "li";
+                std::stringstream ss(content);
+                std::stringstream os;
+                std::string line;
+                std::vector<std::string> lines;
 
-                if (!content.empty())
-                    content.erase(0, 2);
+                while(std::getline(ss, line, '\n'))
+                {
+                    lines.push_back(line);
+                }
+
+                for (const auto& l : lines)
+                {
+                    if (!l.empty())
+                        l.erase(0, 2);
+                    
+                    os << l << "\n";
+                }
+
+                tag = "li";
                 
-                value = content;
+                value = os.str();
 
                 std::vector<std::unique_ptr<HTMLNode>> items;
 
