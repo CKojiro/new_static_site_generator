@@ -93,30 +93,18 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
             {
                 std::string content = blocks[i];
                 std::stringstream ss(content);
-                std::stringstream os;
                 std::string line;
-                std::vector<std::string> lines;
-
-                while(std::getline(ss, line, '\n'))
-                {
-                    lines.push_back(line);
-                }
-
-                for (const auto& l : lines)
-                {
-                    if (!l.empty())
-                        l.erase(0, 2);
-                    
-                    os << l << "\n";
-                }
-
-                tag = "li";
-                
-                value = os.str();
-
                 std::vector<std::unique_ptr<HTMLNode>> items;
 
-                items.push_back(std::make_unique<LeafNode>(tag, value));
+                tag = "li";
+
+                while (std::getline(ss, line, '\n'))
+                {
+                    if (!line.empty())
+                        line.erase(0, 2);
+
+                    items.push_back(std::make_unique<LeafNode>(tag, line));
+                }
 
                 children.push_back(
                     std::make_unique<ParentNode>("ul", std::move(items)));
@@ -126,35 +114,27 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
             case BlockType::OrderedList:
             {
                 std::string content = blocks[i];
-
                 std::stringstream ss(content);
-                std::stringstream os;
                 std::string line;
-                std::vector<std::string> lines;
-
-                while(std::getline(ss, line, '\n'))
-                {
-                    lines.push_back(line);
-                }
-
-                for (const auto& l : lines)
-                {
-                    if (!l.empty())
-                        l.erase(0, 2);
-                    
-                    os << l << "\n";
-                }
-
-                tag = "li";
-                
-                value = os.str();
-
+                int count = 1;
                 std::vector<std::unique_ptr<HTMLNode>> items;
 
-                items.push_back(std::make_unique<LeafNode>(tag, value));
+                tag = "li";
+
+                while (std::getline(ss, line, '\n'))
+                {
+                    int length = (count == 0) ? 1 : static_cast<int>(std::log10(std::abs(count))) + 1;
+
+                    if (!line.empty())
+                        line.erase(0, length + 2);
+
+                    items.push_back(std::make_unique<LeafNode>(tag, line));
+
+                    count++;
+                }
 
                 children.push_back(
-                    std::make_unique<ParentNode>("ol", std::move(items)));
+                    std::make_unique<ParentNode>("ul", std::move(items)));
 
                 break;
             }
