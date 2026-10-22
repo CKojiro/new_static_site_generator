@@ -1,11 +1,12 @@
 
 #pragma once
 
-#include <cmath>
 #include <string>
 #include <vector>
 #include <memory>
+#include <cctype>
 #include <sstream>
+#include <algorithm>
 #include "htmlnode.hpp"
 #include "parentnode.hpp"
 #include "leafnode.hpp"

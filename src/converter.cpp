@@ -116,25 +116,37 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
                 std::string content = blocks[i];
                 std::stringstream ss(content);
                 std::string line;
-                int count = 1;
+                char period = '.';
                 std::vector<std::unique_ptr<HTMLNode>> items;
 
                 tag = "li";
 
                 while (std::getline(ss, line, '\n'))
                 {
-                    int length = (count == 0) ? 1 : static_cast<int>(std::log10(std::abs(count))) + 1;
+                    size_t index = 0;
 
-                    if (!line.empty())
-                        line.erase(0, length + 2);
+                    if (line.find(period) != std::string::npos)
+                    {
+                        index = line.find(period);
+                        std::string num = line.substr(0, index);
+
+                        if (num.empty() ||
+                            !(std::all_of(num.begin(), num.end(),
+                            [](unsigned char c) { return std::isdigit(c); })))
+                        {
+                            index = 0;
+                        }
+                    }
+                    
+
+                    if (!line.empty() && index > 0)
+                        line.erase(0, index + 2);
 
                     items.push_back(std::make_unique<LeafNode>(tag, line));
-
-                    count++;
                 }
 
                 children.push_back(
-                    std::make_unique<ParentNode>("ul", std::move(items)));
+                    std::make_unique<ParentNode>("ol", std::move(items)));
 
                 break;
             }
