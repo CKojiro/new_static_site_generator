@@ -140,7 +140,14 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
                     
 
                     if (!line.empty() && index > 0)
-                        line.erase(0, index + 2);
+                        line.erase(0, index + 1);
+                    
+                    size_t first = line.find_first_not_of(' ');
+
+                    if (first != std::string::npos)
+                        line.erase(0, first);
+                    else
+                        line.clear();
 
                     items.push_back(std::make_unique<LeafNode>(tag, line));
                 }
