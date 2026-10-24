@@ -8,4 +8,4 @@ namespace fs = std::filesystem;
 
 void copyDirectory(const fs::path& source, const fs::path& destination);
 
-void deleteDirectoryContents(const fs::path& directory);
+bool deleteDirectoryContents(const fs::path& directory);

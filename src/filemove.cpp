@@ -15,9 +15,14 @@ void copyDirectory(const fs::path& source, const fs::path& destination)
         {
             fs::create_directories(destination);
         }
-        else
+        else if (fs::is_directory(destination))
         {
             deleteDirectoryContents(destination);
+        }
+        else
+        {
+            std::cerr << "Destination is not a directory." << std::endl;
+            return;
         }
 
         fs::copy_options options = fs::copy_options::recursive;
@@ -31,12 +36,12 @@ void copyDirectory(const fs::path& source, const fs::path& destination)
     
 }
 
-void deleteDirectoryContents(const fs::path& directory)
+bool deleteDirectoryContents(const fs::path& directory)
 {
     if (!fs::exists(directory) || !fs::is_directory(directory))
     {
         std::cerr << "Path does not exist or is not a directory." << std::endl;
-        return;
+        return false;
     }
 
     for (const auto& entry : fs::directory_iterator(directory))
@@ -52,4 +57,6 @@ void deleteDirectoryContents(const fs::path& directory)
                 << ec.message() << std::endl;
         }
     }
+
+    return true;
 }
