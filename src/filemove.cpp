@@ -11,18 +11,26 @@ void copyDirectory(const fs::path& source, const fs::path& destination)
             return;
         }
 
-        if (!fs::exists(destination))
+        if (fs::exists(destination))
         {
-            fs::create_directories(destination);
-        }
-        else if (fs::is_directory(destination))
-        {
-            deleteDirectoryContents(destination);
+            if (fs::equivalent(source, destination))
+            {
+                std::cerr << "Source directory and destination directory are the same." << std::endl;
+                return;
+            }
+
+            if (!fs::is_directory(destination))
+            {
+                std::cerr << "Destination is not a directory." << std::endl;
+                return;
+            }
+
+            if (!deleteDirectoryContents(destination))
+                return;
         }
         else
         {
-            std::cerr << "Destination is not a directory." << std::endl;
-            return;
+            fs::create_directories(destination);
         }
 
         fs::copy_options options = fs::copy_options::recursive;
@@ -38,6 +46,8 @@ void copyDirectory(const fs::path& source, const fs::path& destination)
 
 bool deleteDirectoryContents(const fs::path& directory)
 {
+    bool output = true;
+
     if (!fs::exists(directory) || !fs::is_directory(directory))
     {
         std::cerr << "Path does not exist or is not a directory." << std::endl;
@@ -55,8 +65,10 @@ bool deleteDirectoryContents(const fs::path& directory)
             std::cerr << "Failed to delete: "
                 << entry.path() << " | "
                 << ec.message() << std::endl;
+
+            output = false;
         }
     }
 
-    return true;
+    return output;
 }
