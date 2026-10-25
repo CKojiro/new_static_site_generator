@@ -1,11 +1,13 @@
 
-#define MD4QT_QT_SUPPORT
-#include "../md4qt/parser.h"
-
 #include <iostream>
+
+#define MD4QT_QT_SUPPORT
+//#include "../md4qt/parser.h"
+#include "filemove.hpp"
 
 int main()
 {
+    /*
     std::cout << "It works!" << std::endl;
     MD::Parser<MD::QStringTrait> p;
 
@@ -26,6 +28,9 @@ int main()
                 break;
         }
     }
+    */
+    std::cout << "Working directory: " << fs::current_path() << '\n';
+    copyDirectory("static", "public");
 
     return 0;
 }
