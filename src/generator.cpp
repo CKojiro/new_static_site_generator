@@ -20,3 +20,26 @@ std::string extractTitle(const std::string& theMarkdown)
 
     return output;
 }
+
+void SiteGenerator::generatePage(fs::path& fromPath,
+    fs::path& templatePath, fs::path& destinationPath)
+{
+    std::cout << "Generating page from " << fromPath.string()
+        << " to " << destinationPath.string() << " using " << templatePath.string();
+
+    std::ifstream mFile(fromPath);
+    std::stringstream mBuffer;
+    mBuffer << mFile.rdbuf();
+    std::string markdown = mBuffer.str();
+
+    std::ifstream tFile(templatePath);
+    std::stringstream tBuffer;
+    tBuffer << tFile.rdbuf();
+    std::string templateFile = tBuffer.str();
+
+    markdownToHTML();
+
+    extractTitle();
+
+    
+}
