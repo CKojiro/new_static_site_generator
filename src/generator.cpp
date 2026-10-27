@@ -37,9 +37,36 @@ void SiteGenerator::generatePage(fs::path& fromPath,
     tBuffer << tFile.rdbuf();
     std::string templateFile = tBuffer.str();
 
-    markdownToHTML();
+    std::string htmlContents = markdownToHTML(markdown).toHTML();
 
-    extractTitle();
+    std::string titleString = extractTitle(markdown);
 
-    
+    std::size_t titlePos = templateFile.find("{{ Title }}");
+
+    if (titlePos != std::string::npos)
+    {
+        templateFile.replace(titlePos, std::string("{{ Title }}").length(), titleString);
+    }
+
+    std::size_t contentsPos = templateFile.find("{{ Contents }}");
+
+    if (contentsPos != std::string::npos)
+    {
+        templateFile.replace(contentsPos, std::string("{{ Contents }}").length(), htmlContents);
+    }
+
+    if (destinationPath.has_parent_path())
+        fs::create_directories(destinationPath.parent_path());
+
+    std::ofstream outFile(destinationPath);
+
+    if (!outFile.is_open())
+    {
+        std::cerr << "Error opening file." << std::endl;
+        return;
+    }
+
+    outFile << templateFile << std::endl;
+
+    outFile.close();
 }

@@ -9,6 +9,8 @@
 #include <stdexcept>
 #include <filesystem>
 
+#include "converter.hpp"
+
 namespace fs = std::filesystem;
 
 std::string extractTitle(const std::string& theMarkdown);
