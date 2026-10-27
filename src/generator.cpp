@@ -21,25 +21,39 @@ std::string extractTitle(const std::string& theMarkdown)
     return output;
 }
 
-void SiteGenerator::generatePage(fs::path& fromPath,
-    fs::path& templatePath, fs::path& destinationPath)
+void SiteGenerator::generatePage(const fs::path& fromPath,
+    const fs::path& templatePath, const fs::path& destinationPath)
 {
     std::cout << "Generating page from " << fromPath.string()
         << " to " << destinationPath.string() << " using " << templatePath.string();
 
     std::ifstream mFile(fromPath);
+
+    if (!mFile.is_open())
+    {
+        std::cerr << "Error opening markdown file." << fromPath << '\n';
+        return;
+    }
+
     std::stringstream mBuffer;
     mBuffer << mFile.rdbuf();
     std::string markdown = mBuffer.str();
 
     std::ifstream tFile(templatePath);
+
+    if (!tFile.is_open())
+    {
+        std::cerr << "Error opening template file." << templatePath << '\n';
+        return;
+    }
+
     std::stringstream tBuffer;
     tBuffer << tFile.rdbuf();
     std::string templateFile = tBuffer.str();
 
-    std::string htmlContents = markdownToHTML(markdown).toHTML();
-
     std::string titleString = extractTitle(markdown);
+
+    std::string htmlContents = markdownToHTML(markdown)->toHTML();
 
     std::size_t titlePos = templateFile.find("{{ Title }}");
 
@@ -47,12 +61,20 @@ void SiteGenerator::generatePage(fs::path& fromPath,
     {
         templateFile.replace(titlePos, std::string("{{ Title }}").length(), titleString);
     }
+    else
+    {
+        
+    }
 
     std::size_t contentsPos = templateFile.find("{{ Contents }}");
 
     if (contentsPos != std::string::npos)
     {
         templateFile.replace(contentsPos, std::string("{{ Contents }}").length(), htmlContents);
+    }
+    else
+    {
+
     }
 
     if (destinationPath.has_parent_path())
@@ -66,7 +88,5 @@ void SiteGenerator::generatePage(fs::path& fromPath,
         return;
     }
 
-    outFile << templateFile << std::endl;
-
-    outFile.close();
+    outFile << templateFile;
 }

@@ -21,5 +21,6 @@ private:
 public:
 
 
-    void generatePage(fs::path& fromPath, fs::path& templatePath, fs::path& destinationPath);
+    void generatePage(const fs::path& fromPath,
+        const fs::path& templatePath, const fs::path& destinationPath);
 };
