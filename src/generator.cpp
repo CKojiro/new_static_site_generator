@@ -3,6 +3,7 @@
 
 std::string extractTitle(const std::string& theMarkdown)
 {
+    bool foundTitle = false;
     std::string output;
     std::stringstream ss(theMarkdown);
 
@@ -13,9 +14,14 @@ std::string extractTitle(const std::string& theMarkdown)
         if (!output.empty() && std::regex_search(output, pattern))
         {
             output.erase(0, 2);
-        
+            foundTitle = true;
             break;
         }
+    }
+
+    if (!foundTitle)
+    {
+        throw std::runtime_error("No H1 heading was found.");
     }
 
     return output;
@@ -31,7 +37,7 @@ void SiteGenerator::generatePage(const fs::path& fromPath,
 
     if (!mFile.is_open())
     {
-        std::cerr << "Error opening markdown file." << fromPath << '\n';
+        std::cerr << "Error opening markdown file: " << fromPath << '\n';
         return;
     }
 
@@ -43,7 +49,7 @@ void SiteGenerator::generatePage(const fs::path& fromPath,
 
     if (!tFile.is_open())
     {
-        std::cerr << "Error opening template file." << templatePath << '\n';
+        std::cerr << "Error opening template file: " << templatePath << '\n';
         return;
     }
 
@@ -51,7 +57,18 @@ void SiteGenerator::generatePage(const fs::path& fromPath,
     tBuffer << tFile.rdbuf();
     std::string templateFile = tBuffer.str();
 
-    std::string titleString = extractTitle(markdown);
+    std::string titleString;
+
+    try
+    {
+        titleString = extractTitle(markdown);
+    }
+    catch(const std::runtime_error& e)
+    {
+        std::cerr << e.what() << '\n';
+        return;
+    }
+    
 
     std::string htmlContents = markdownToHTML(markdown)->toHTML();
 
@@ -63,7 +80,8 @@ void SiteGenerator::generatePage(const fs::path& fromPath,
     }
     else
     {
-        
+        std::cerr << "Title placeholder not found." << std::endl;
+        return;
     }
 
     std::size_t contentsPos = templateFile.find("{{ Contents }}");
@@ -74,11 +92,14 @@ void SiteGenerator::generatePage(const fs::path& fromPath,
     }
     else
     {
-
+        std::cerr << "Content placeholder not found." << std::endl;
+        return;
     }
 
     if (destinationPath.has_parent_path())
+    {
         fs::create_directories(destinationPath.parent_path());
+    }
 
     std::ofstream outFile(destinationPath);
 
@@ -89,4 +110,11 @@ void SiteGenerator::generatePage(const fs::path& fromPath,
     }
 
     outFile << templateFile;
+
+    if (!outFile)
+    {
+        std::cerr << "Error writing output file: "
+            << destinationPath << '\n';
+        return;
+    }
 }
