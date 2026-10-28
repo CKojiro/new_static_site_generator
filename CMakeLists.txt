@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(main
     src/main.cpp
     src/filemove.cpp
+    src/generator.cpp
 )
 
 target_include_directories(main PRIVATE

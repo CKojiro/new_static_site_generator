@@ -4,6 +4,7 @@
 #define MD4QT_QT_SUPPORT
 //#include "../md4qt/parser.h"
 #include "filemove.hpp"
+#include "generator.hpp"
 
 int main()
 {
@@ -29,8 +30,8 @@ int main()
         }
     }
     */
-    std::cout << "Working directory: " << fs::current_path() << '\n';
-    copyDirectory("static", "public");
+    SiteGenerator sg;
+    sg.generatePage("content/index.md", "template.html", "public/index.html");
 
     return 0;
 }

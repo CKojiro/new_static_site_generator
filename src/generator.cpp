@@ -63,7 +63,7 @@ void SiteGenerator::generatePage(const fs::path& fromPath,
     {
         titleString = extractTitle(markdown);
     }
-    catch(const std::runtime_error& e)
+    catch (const std::runtime_error& e)
     {
         std::cerr << e.what() << '\n';
         return;
