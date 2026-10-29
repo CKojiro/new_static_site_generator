@@ -56,7 +56,7 @@ public:
 
     BlockType blockToBlockType(std::string theText);
 
-    std::string getText();
-    TextType getTextType();
-    std::string getUrl();
+    std::string getText() const;
+    TextType getTextType() const;
+    std::string getUrl() const;
 };

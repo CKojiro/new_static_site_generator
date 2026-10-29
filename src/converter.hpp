@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <map>
 #include <string>
 #include <vector>
 #include <memory>
@@ -14,6 +15,6 @@
 
 std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown);
 
-std::vector<std::unique_ptr<HTMLNode>> textToChildren(std::string theText);
+std::vector<std::unique_ptr<HTMLNode>> textToChildren(const std::string& theText);
 
-LeafNode textNodeToHTMLNode(TextNode theNode);
+std::unique_ptr<HTMLNode> textNodeToHTMLNode(const TextNode& theNode);

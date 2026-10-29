@@ -394,17 +394,17 @@ BlockType TextNode::blockToBlockType(std::string theText)
     return BlockType::Paragraph;
 }
 
-std::string TextNode::getText()
+std::string TextNode::getText() const
 {
     return myText;
 }
 
-TextType TextNode::getTextType()
+TextType TextNode::getTextType() const
 {
     return myTextType;
 }
 
-std::string TextNode::getUrl()
+std::string TextNode::getUrl() const
 {
     return myUrl;
 }

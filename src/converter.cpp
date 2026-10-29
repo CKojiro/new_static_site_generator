@@ -174,44 +174,44 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
     return std::make_unique<ParentNode>("div", std::move(children));
 }
 
-std::vector<std::unique_ptr<HTMLNode>> textToChildren(std::string theText)
+std::vector<std::unique_ptr<HTMLNode>> textToChildren(const std::string& theText)
 {
-    std::vector<std::unique_ptr<HTMLNode>> children;
+    TextNode parser("", TextType::Text);
+    std::vector<TextNode> nodeList = parser.textToTextNode(theText);
 
-    std::vector<TextNode> nodeList = node.textToTextNode(theText);
+    std::vector<std::unique_ptr<HTMLNode>> children;
+    children.reserve(nodeList.size());
 
     for (const TextNode& tNode : nodeList)
     {
-        children.push_back(std::make_unique<LeafNode>(textNodeToHTMLNode()));
+        children.push_back(textNodeToHTMLNode(tNode));
     }
 
     return children;
 }
 
-LeafNode textNodeToHTMLNode(TextNode theNode)
+std::unique_ptr<HTMLNode> textNodeToHTMLNode(const TextNode& theNode)
 {
     switch (theNode.getTextType())
     {
         case TextType::Text:
-            return LeafNode("", theNode.getText());
-            break;
+            return std::make_unique<LeafNode>("", theNode.getText());
         case TextType::Bold:
-            return LeafNode("b", theNode.getText());
-            break;
+            return std::make_unique<LeafNode>("b", theNode.getText());
         case TextType::Italic:
-            return LeafNode("i", theNode.getText());
-            break;
+            return std::make_unique<LeafNode>("i", theNode.getText());
         case TextType::Code:
-            return LeafNode("code", theNode.getText());
-            break;
+            return std::make_unique<LeafNode>("code", theNode.getText());
         case TextType::Link:
-            return LeafNode("a", theNode.getText(), {{"a", {"href", theNode.getUrl()}}});
-            break;
+            return std::make_unique<LeafNode>("a", theNode.getText(),
+                std::map<std::string, std::pair<std::string, std::string>>{
+                    {"a", {"href", theNode.getUrl()}}});
         case TextType::Image:
-            return LeafNode("img", "", {{"img", {"src", ""}}, {"img", {"alt", ""}}});
-            break;
+            return std::make_unique<LeafNode>("img", "",
+                std::map<std::string, std::pair<std::string, std::string>>{
+                    {"img", {"src", theNode.getUrl()}},
+                    {"img", {"alt", theNode.getText()}}});
         default:
             throw std::invalid_argument("TextType is not one of the allowed types.");
-            break;
     }
 }
