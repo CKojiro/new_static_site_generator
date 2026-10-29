@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <map>
 
-#include "textnode.hpp"
+//#include "textnode.hpp"
 
 class HTMLNode
 {
@@ -30,8 +30,6 @@ public:
     virtual std::string toHTML();
     std::string propsToHTML();
     virtual std::string stringRepresentation();
-
-    std::vector<std::unique_ptr<HTMLNode>> textToChildren(std::string theText);
 
     std::string getTag() const;
     std::string getValue() const;

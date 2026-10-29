@@ -173,3 +173,45 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
 
     return std::make_unique<ParentNode>("div", std::move(children));
 }
+
+std::vector<std::unique_ptr<HTMLNode>> textToChildren(std::string theText)
+{
+    std::vector<std::unique_ptr<HTMLNode>> children;
+
+    std::vector<TextNode> nodeList = node.textToTextNode(theText);
+
+    for (const TextNode& tNode : nodeList)
+    {
+        children.push_back(std::make_unique<LeafNode>(textNodeToHTMLNode()));
+    }
+
+    return children;
+}
+
+LeafNode textNodeToHTMLNode(TextNode theNode)
+{
+    switch (theNode.getTextType())
+    {
+        case TextType::Text:
+            return LeafNode("", theNode.getText());
+            break;
+        case TextType::Bold:
+            return LeafNode("b", theNode.getText());
+            break;
+        case TextType::Italic:
+            return LeafNode("i", theNode.getText());
+            break;
+        case TextType::Code:
+            return LeafNode("code", theNode.getText());
+            break;
+        case TextType::Link:
+            return LeafNode("a", theNode.getText(), {{"a", {"href", theNode.getUrl()}}});
+            break;
+        case TextType::Image:
+            return LeafNode("img", "", {{"img", {"src", ""}}, {"img", {"alt", ""}}});
+            break;
+        default:
+            throw std::invalid_argument("TextType is not one of the allowed types.");
+            break;
+    }
+}

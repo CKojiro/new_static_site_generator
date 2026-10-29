@@ -50,22 +50,6 @@ std::string HTMLNode::stringRepresentation()
     return output.str();
 }
 
-std::vector<std::unique_ptr<HTMLNode>> HTMLNode::textToChildren(std::string theText)
-{
-    std::vector<std::unique_ptr<HTMLNode>> children;
-
-    TextNode node("hi", TextType::Text);
-
-    std::vector<TextNode> nodeList = node.textToTextNode(theText);
-
-    for (const TextNode& tNode : nodeList)
-    {
-        children.push_back(std::make_unique<LeafNode>(tNode.textNodeToHTMLNode()));
-    }
-
-    return children;
-}
-
 std::string HTMLNode::getTag() const
 {
     return myTag;

@@ -58,34 +58,6 @@ std::string TextNode::stringRepresentation()
     return output.str();
 }
 
-LeafNode TextNode::textNodeToHTMLNode() const
-{
-    switch (myTextType)
-    {
-        case TextType::Text:
-            return LeafNode("", myText);
-            break;
-        case TextType::Bold:
-            return LeafNode("b", myText);
-            break;
-        case TextType::Italic:
-            return LeafNode("i", myText);
-            break;
-        case TextType::Code:
-            return LeafNode("code", myText);
-            break;
-        case TextType::Link:
-            return LeafNode("a", myText, {{"a", {"href", myUrl}}});
-            break;
-        case TextType::Image:
-            return LeafNode("img", "", {{"img", {"src", ""}}, {"img", {"alt", ""}}});
-            break;
-        default:
-            throw std::invalid_argument("TextType is not one of the allowed types.");
-            break;
-    }
-}
-
 std::vector<TextNode> TextNode::splitNodesDelimiter(
     const std::vector<TextNode>& oldNodes,
     std::string delimiter, TextType textType)
@@ -420,4 +392,19 @@ BlockType TextNode::blockToBlockType(std::string theText)
     }
 
     return BlockType::Paragraph;
+}
+
+std::string TextNode::getText()
+{
+    return myText;
+}
+
+TextType TextNode::getTextType()
+{
+    return myTextType;
+}
+
+std::string TextNode::getUrl()
+{
+    return myUrl;
 }

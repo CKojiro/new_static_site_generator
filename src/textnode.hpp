@@ -41,8 +41,6 @@ public:
     bool equals(const TextNode& other);
     std::string stringRepresentation();
 
-    LeafNode textNodeToHTMLNode() const;
-
     std::vector<TextNode> splitNodesDelimiter(const std::vector<TextNode>& oldNodes,
         std::string delimiter, TextType textType);
     
@@ -57,4 +55,8 @@ public:
     std::vector<std::string> markdownToBlocks(std::string theMarkdown);
 
     BlockType blockToBlockType(std::string theText);
+
+    std::string getText();
+    TextType getTextType();
+    std::string getUrl();
 };
