@@ -47,9 +47,6 @@ public:
     std::map<std::string, std::string> extractMarkdownImages(std::string theText);
     std::map<std::string, std::string> extractMarkdownLinks(std::string theText);
 
-    std::vector<TextNode> splitNodesImage(const std::vector<TextNode>& oldNodes);
-    std::vector<TextNode> splitNodesLink(const std::vector<TextNode>& oldNodes);
-
     std::vector<std::string> markdownToBlocks(std::string theMarkdown);
 
     BlockType blockToBlockType(std::string theText);

@@ -174,6 +174,92 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
     return std::make_unique<ParentNode>("div", std::move(children));
 }
 
+std::vector<TextNode> splitNodesImage(const std::vector<TextNode>& oldNodes)
+{
+    std::vector<TextNode> output;
+
+    std::regex pattern(R"(!\[([^\]]+)\]\(([^)]+)\))");
+
+    for (const auto& node : oldNodes)
+    {
+        size_t position = 0;
+
+        auto matchesBegin = std::sregex_iterator(node.getText().begin(),
+            node.getText().end(), pattern);
+        auto matchesEnd = std::sregex_iterator();
+
+        for (std::sregex_iterator i = matchesBegin; i != matchesEnd; i++)
+        {
+            std::smatch match = *i;
+
+            auto index = match.position();
+
+            std::string textOne = node.getText().substr(position, index - position);
+            std::string textTwo = match[1].str();
+            std::string textThree = match[2].str();
+
+            if (!textOne.empty())
+                output.push_back(TextNode(textOne, TextType::Text));
+            
+            output.push_back(TextNode(textTwo, TextType::Image, textThree));
+
+            position = match.position() + match.length();
+        }
+
+        std::string finalText = node.getText().substr(position);
+
+        if (!finalText.empty())
+        {
+            output.push_back(TextNode(finalText, TextType::Text));
+        }
+    }
+
+    return output;
+}
+
+std::vector<TextNode> splitNodesLink(const std::vector<TextNode>& oldNodes)
+{
+    std::vector<TextNode> output;
+
+    std::regex pattern(R"(\[([^\]]+)\]\(([^)]+)\))");
+
+    for (const auto& node : oldNodes)
+    {
+        size_t position = 0;
+
+        auto matchesBegin = std::sregex_iterator(node.getText().begin(),
+            node.getText().end(), pattern);
+        auto matchesEnd = std::sregex_iterator();
+
+        for (std::sregex_iterator i = matchesBegin; i != matchesEnd; i++)
+        {
+            std::smatch match = *i;
+
+            auto index = match.position();
+
+            std::string textOne = node.getText().substr(position, index - position);
+            std::string textTwo = match[1].str();
+            std::string textThree = match[2].str();
+
+            if (!textOne.empty())
+                output.push_back(TextNode(textOne, TextType::Text));
+
+            output.push_back(TextNode(textTwo, TextType::Link, textThree));
+
+            position = match.position() + match.length();
+        }
+
+        std::string finalText = node.getText().substr(position);
+
+        if (!finalText.empty())
+        {
+            output.push_back(TextNode(finalText, TextType::Text));
+        }
+    }
+
+    return output;
+}
+
 std::vector<TextNode> textToTextNode(std::string theText)
 {
     std::vector<TextNode> output;
@@ -324,8 +410,8 @@ std::unique_ptr<HTMLNode> textNodeToHTMLNode(const TextNode& theNode)
         case TextType::Image:
             return std::make_unique<LeafNode>("img", "",
                 std::map<std::string, std::pair<std::string, std::string>>{
-                    {"img", {"src", theNode.getUrl()}},
-                    {"img", {"alt", theNode.getText()}}});
+                    {"src", {"src", theNode.getUrl()}},
+                    {"alt", {"alt", theNode.getText()}}});
         default:
             throw std::invalid_argument("TextType is not one of the allowed types.");
     }
