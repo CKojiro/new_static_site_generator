@@ -174,10 +174,125 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
     return std::make_unique<ParentNode>("div", std::move(children));
 }
 
+std::vector<TextNode> textToTextNode(std::string theText)
+{
+    std::vector<TextNode> output;
+    std::vector<TextNode> firstRun;
+    std::vector<TextNode> secondRun;
+    std::string::size_type position = 0;
+    std::string::size_type i = 0;
+    std::string text = "";
+
+    while (i < theText.length())
+    {
+        switch (theText[i])
+        {
+            case '*':
+            {
+                if (i + 1 < theText.length() && theText[i + 1] == '*')
+                {
+                    text = theText.substr(position, i - position);
+                
+                    if (!text.empty())
+                        firstRun.push_back(TextNode(text, TextType::Text));
+
+                    position = i;
+                    auto closing = theText.find("**", position + 2);
+
+                    if (closing == std::string::npos)
+                    {
+                        throw std::invalid_argument("Closing delimiter not found.");
+                    }
+
+                    i = closing;
+                    text = theText.substr(position + 2, i - (position + 2));
+                    firstRun.push_back(TextNode(text, TextType::Bold));
+                    i += 2;
+                    position = i;
+                    continue;
+                }
+                else
+                {
+                    i++;
+                    continue;
+                }
+                
+            }
+            case '_':
+            {
+                text = theText.substr(position, i - position);
+
+                if (!text.empty())
+                    firstRun.push_back(TextNode(text, TextType::Text));
+
+                position = i;
+                auto closing = theText.find('_', position + 1);
+
+                if (closing == std::string::npos)
+                {
+                    throw std::invalid_argument("Closing delimiter not found.");
+                }
+
+                i = closing;
+                text = theText.substr(position + 1, i - (position + 1));
+                firstRun.push_back(TextNode(text, TextType::Italic));
+                i++;
+                position = i;
+                continue;
+            }
+            case '`':
+            {
+                text = theText.substr(position, i - position);
+                
+                if (!text.empty())
+                    firstRun.push_back(TextNode(text, TextType::Text));
+                
+                position = i;
+                auto closing = theText.find('`', position + 1);
+
+                if (closing == std::string::npos)
+                {
+                    throw std::invalid_argument("Closing delimiter not found.");
+                }
+                
+                i = closing;
+                text = theText.substr(position + 1, i - (position + 1));
+                firstRun.push_back(TextNode(text, TextType::Code));
+                i++;
+                position = i;
+                continue;
+            }
+            default:
+                i++;
+                continue;
+        }
+    }
+
+    std::string extraText = theText.substr(position);
+
+    if (!extraText.empty())
+        firstRun.push_back(TextNode(extraText, TextType::Text));
+
+    std::vector<TextNode> newNodes = splitNodesImage(firstRun);
+
+    for (TextNode node : newNodes)
+    {
+        secondRun.push_back(node);
+    }
+
+    newNodes = splitNodesLink(secondRun);
+
+    for (TextNode node : newNodes)
+    {
+        output.push_back(node);
+    }
+
+    return output;
+}
+
 std::vector<std::unique_ptr<HTMLNode>> textToChildren(const std::string& theText)
 {
-    TextNode parser("", TextType::Text);
-    std::vector<TextNode> nodeList = parser.textToTextNode(theText);
+    std::vector<TextNode> nodeList = textToTextNode(theText);
 
     std::vector<std::unique_ptr<HTMLNode>> children;
     children.reserve(nodeList.size());

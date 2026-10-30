@@ -15,6 +15,8 @@
 
 std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown);
 
+std::vector<TextNode> textToTextNode(std::string theText);
+
 std::vector<std::unique_ptr<HTMLNode>> textToChildren(const std::string& theText);
 
 std::unique_ptr<HTMLNode> textNodeToHTMLNode(const TextNode& theNode);

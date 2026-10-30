@@ -50,8 +50,6 @@ public:
     std::vector<TextNode> splitNodesImage(const std::vector<TextNode>& oldNodes);
     std::vector<TextNode> splitNodesLink(const std::vector<TextNode>& oldNodes);
 
-    std::vector<TextNode> textToTextNode(std::string theText);
-
     std::vector<std::string> markdownToBlocks(std::string theMarkdown);
 
     BlockType blockToBlockType(std::string theText);
