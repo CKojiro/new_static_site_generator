@@ -1,1 +1,1 @@
-npx http-server -p 8888
+npx http-server ./public -p 8888
