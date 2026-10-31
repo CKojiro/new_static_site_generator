@@ -174,18 +174,19 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
     return std::make_unique<ParentNode>("div", std::move(children));
 }
 
-std::vector<TextNode> splitNodesImage(const std::vector<TextNode>& oldNodes)
+std::vector<TextNode> splitNodes(const std::vector<TextNode>& oldNodes,
+    const std::regex& pattern, TextType type)
 {
     std::vector<TextNode> output;
-
-    std::regex pattern(R"(!\[([^\]]+)\]\(([^)]+)\))");
 
     for (const auto& node : oldNodes)
     {
         size_t position = 0;
 
-        auto matchesBegin = std::sregex_iterator(node.getText().begin(),
-            node.getText().end(), pattern);
+        const std::string text = node.getText();
+
+        auto matchesBegin = std::sregex_iterator(text.begin(),
+            text.end(), pattern);
         auto matchesEnd = std::sregex_iterator();
 
         for (std::sregex_iterator i = matchesBegin; i != matchesEnd; i++)
@@ -194,14 +195,14 @@ std::vector<TextNode> splitNodesImage(const std::vector<TextNode>& oldNodes)
 
             auto index = match.position();
 
-            std::string textOne = node.getText().substr(position, index - position);
+            std::string textOne = text.substr(position, index - position);
             std::string textTwo = match[1].str();
             std::string textThree = match[2].str();
 
             if (!textOne.empty())
                 output.push_back(TextNode(textOne, TextType::Text));
             
-            output.push_back(TextNode(textTwo, TextType::Image, textThree));
+            output.push_back(TextNode(textTwo, type, textThree));
 
             position = match.position() + match.length();
         }
@@ -217,47 +218,18 @@ std::vector<TextNode> splitNodesImage(const std::vector<TextNode>& oldNodes)
     return output;
 }
 
+std::vector<TextNode> splitNodesImage(const std::vector<TextNode>& oldNodes)
+{
+    std::regex pattern(R"(!\[([^\]]+)\]\(([^)]+)\))");
+
+    return splitNodes(oldNodes, pattern, TextType::Image);
+}
+
 std::vector<TextNode> splitNodesLink(const std::vector<TextNode>& oldNodes)
 {
-    std::vector<TextNode> output;
-
     std::regex pattern(R"(\[([^\]]+)\]\(([^)]+)\))");
 
-    for (const auto& node : oldNodes)
-    {
-        size_t position = 0;
-
-        auto matchesBegin = std::sregex_iterator(node.getText().begin(),
-            node.getText().end(), pattern);
-        auto matchesEnd = std::sregex_iterator();
-
-        for (std::sregex_iterator i = matchesBegin; i != matchesEnd; i++)
-        {
-            std::smatch match = *i;
-
-            auto index = match.position();
-
-            std::string textOne = node.getText().substr(position, index - position);
-            std::string textTwo = match[1].str();
-            std::string textThree = match[2].str();
-
-            if (!textOne.empty())
-                output.push_back(TextNode(textOne, TextType::Text));
-
-            output.push_back(TextNode(textTwo, TextType::Link, textThree));
-
-            position = match.position() + match.length();
-        }
-
-        std::string finalText = node.getText().substr(position);
-
-        if (!finalText.empty())
-        {
-            output.push_back(TextNode(finalText, TextType::Text));
-        }
-    }
-
-    return output;
+    return splitNodes(oldNodes, pattern, TextType::Link);
 }
 
 std::vector<TextNode> textToTextNode(std::string theText)

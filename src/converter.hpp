@@ -15,6 +15,9 @@
 
 std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown);
 
+std::vector<TextNode> splitNodes(const std::vector<TextNode>& oldNodes,
+    const std::regex& pattern, TextType type);
+
 std::vector<TextNode> splitNodesImage(const std::vector<TextNode>& oldNodes);
 std::vector<TextNode> splitNodesLink(const std::vector<TextNode>& oldNodes);
 
