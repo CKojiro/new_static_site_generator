@@ -152,6 +152,9 @@ std::vector<std::string> TextNode::markdownToBlocks(std::string theMarkdown)
 {
     std::vector<std::string> output;
 
+    theMarkdown.erase(std::remove(theMarkdown.begin(), theMarkdown.end(), '\r'),
+        theMarkdown.end());
+
     std::string delimiter = "\n\n";
     size_t start = 0;
     size_t end = theMarkdown.find(delimiter);

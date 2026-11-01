@@ -7,6 +7,12 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
 
     std::vector<std::string> blocks = node.markdownToBlocks(theMarkdown);
 
+    for (const auto& block : blocks)
+    {
+        std::cout << "----- BLOCK -----\n";
+        std::cout << block << '\n';
+    }
+
     std::vector<std::unique_ptr<HTMLNode>> children;
 
     for (size_t i = 0; i < blocks.size(); i++)

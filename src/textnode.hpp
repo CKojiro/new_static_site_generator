@@ -4,6 +4,7 @@
 #include <sstream>
 #include <iostream>
 #include <stdexcept>
+#include <algorithm>
 
 #include "leafnode.hpp"
 

@@ -19,8 +19,6 @@ class SiteGenerator
 {
 private:
 public:
-
-
     void generatePage(const fs::path& fromPath,
         const fs::path& templatePath, const fs::path& destinationPath);
 };
