@@ -30,15 +30,7 @@ std::string ParentNode::toHTML()
 
     for (const auto& node : getChildren())
     {
-        if (node->getTag() == "")
-        {
-            output << node->getValue();
-        }
-        else
-        {
-            output << "<" << node->getTag() << ">" << node->getValue();
-            output << "</" << node->getTag() << ">";
-        }
+        output << node->toHTML();
     }
 
     output << "</" << getTag() << ">";

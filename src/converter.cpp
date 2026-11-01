@@ -73,6 +73,8 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
 
                 std::vector<std::unique_ptr<HTMLNode>> items;
 
+                std::cout << "CODE CONTENT: [" << content << "]\n";
+
                 items.push_back(std::make_unique<LeafNode>(tag, value));
 
                 children.push_back(
@@ -106,6 +108,8 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
 
                 while (std::getline(ss, line, '\n'))
                 {
+                    std::cout << "LIST LINE: [" << line << "]\n";
+
                     if (!line.empty())
                         line.erase(0, 2);
 
@@ -129,6 +133,8 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
 
                 while (std::getline(ss, line, '\n'))
                 {
+                    std::cout << "LIST LINE: [" << line << "]\n";
+
                     size_t index = 0;
 
                     if (line.find(period) != std::string::npos)
@@ -170,7 +176,7 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
                 tag = "p";
                 value = content;
                 
-                children.push_back(std::make_unique<LeafNode>(tag, value));
+                children.push_back(std::make_unique<ParentNode>(tag, textToChildren(content)));
 
                 break;
             }
