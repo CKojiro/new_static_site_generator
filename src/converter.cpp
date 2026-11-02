@@ -85,15 +85,26 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
             case BlockType::Quote:
             {
                 std::string content = blocks[i];
+                std::stringstream ss(content);
+                std::string line;
+                std::string quoteText;
 
                 tag = "blockquote";
 
-                if (!content.empty())
-                    content.erase(0, 2);
+                while (std::getline(ss, line, '\n'))
+                {
+                    if (!line.empty())
+                    {
+                        line.erase(0, 1);
 
-                value = content;
+                        if (line[0] == ' ')
+                            line.erase(0, 1);
+                    }
 
-                children.push_back(std::make_unique<LeafNode>(tag, value));
+                    quoteText += line + '\n';
+                }
+
+                children.push_back(std::make_unique<ParentNode>(tag, textToChildren(quoteText)));
 
                 break;
             }
