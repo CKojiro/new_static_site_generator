@@ -124,7 +124,7 @@ std::unique_ptr<HTMLNode> markdownToHTML(std::string theMarkdown)
                     if (!line.empty())
                         line.erase(0, 2);
 
-                    items.push_back(std::make_unique<LeafNode>(tag, line));
+                    items.push_back(std::make_unique<ParentNode>(tag, textToChildren(line)));
                 }
 
                 children.push_back(
