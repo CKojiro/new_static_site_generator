@@ -354,7 +354,22 @@ std::vector<TextNode> textToTextNode(std::string theText)
     if (!extraText.empty())
         firstRun.push_back(TextNode(extraText, TextType::Text));
 
+    for (const auto& node : firstRun)
+    {
+        std::cout << "Before image parsing: "
+            << node.getText() << " | "
+            << static_cast<int>(node.getTextType()) << '\n';
+    }
+
     std::vector<TextNode> newNodes = splitNodesImage(firstRun);
+
+    for (const auto& node : newNodes)
+    {
+        std::cout << "After image parsing: "
+            << node.getText() << " | "
+            << node.getUrl() << " | "
+            << static_cast<int>(node.getTextType()) << '\n';
+    }
 
     for (TextNode node : newNodes)
     {
