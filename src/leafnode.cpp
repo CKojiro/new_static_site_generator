@@ -13,28 +13,29 @@ LeafNode::LeafNode(LeafNode&& theNode) noexcept
 
 std::string LeafNode::toHTML()
 {
-    if (getValue() == "")
-    {
-        throw std::invalid_argument("LeafNode must have a value.");
-    }
-
     std::stringstream output;
 
     if (getTag() == "")
     {
         return getValue();
     }
-    else if (getProps().empty())
+
+    output << "<" << getTag();
+
+    for (const auto& [mapKey, innerPair] : getProps())
     {
-        output << "<" << getTag() << ">";
-        output << getValue() << "</" << getTag() << ">";
+        const auto& [key, value] = innerPair;
+
+        output << " " << key << "=" << "\"" << value << "\"";
+    }
+
+    if (getTag() == "img")
+    {
+        output << " />";
     }
     else
     {
-        const auto& [key, value] = getProps().at(getTag());
-        output << "<" << getTag();
-        output << " " << key << "=" << "\"" << value << "\">";
-        output << getValue() << "</" << getTag() << ">";
+        output << ">" << getValue() << "</" << getTag() << ">";
     }
 
     return output.str();
