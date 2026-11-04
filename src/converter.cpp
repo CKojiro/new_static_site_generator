@@ -206,6 +206,12 @@ std::vector<TextNode> splitNodes(const std::vector<TextNode>& oldNodes,
     {
         size_t position = 0;
 
+        if (node.getTextType() != TextType::Text)
+        {
+            output.push_back(node);
+            continue;
+        }
+
         const std::string text = node.getText();
 
         auto matchesBegin = std::sregex_iterator(text.begin(),
@@ -230,7 +236,7 @@ std::vector<TextNode> splitNodes(const std::vector<TextNode>& oldNodes,
             position = match.position() + match.length();
         }
 
-        std::string finalText = node.getText().substr(position);
+        std::string finalText = text.substr(position);
 
         if (!finalText.empty())
         {
