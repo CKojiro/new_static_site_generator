@@ -118,3 +118,25 @@ void SiteGenerator::generatePage(const fs::path& fromPath,
         return;
     }
 }
+
+void SiteGenerator::generatePagesRecursive(const fs::path& directoryPath,
+    const fs::path& templatePath, const fs::path& destinationPath)
+{
+    if (!fs::exists() || !fs::is_directory)
+        std::cerr << "";
+
+    try
+    {
+        for (const auto& entry : fs::recursive_directory_iterator())
+        {
+            
+        }
+    }
+    catch(const fs::filesystem_error& e)
+    {
+        std::cerr << "Filesystem error: " << e.what() << '\n';
+    }
+    
+
+    generatePage();
+}
