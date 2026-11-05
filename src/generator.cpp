@@ -30,8 +30,12 @@ std::string extractTitle(const std::string& theMarkdown)
 void SiteGenerator::generatePage(const fs::path& fromPath,
     const fs::path& templatePath, const fs::path& destinationPath)
 {
+    fs::path relativePath = fs::relative(fromPath, contentPath);
+    relativePath.replace_extension(".html");
+    fs::path outputPath = destinationPath / relativePath;
+
     std::cout << "Generating page from " << fromPath.string()
-        << " to " << destinationPath.string() << " using " << templatePath.string();
+        << " to " << outputPath.string() << " using " << templatePath.string();
 
     std::ifstream mFile(fromPath);
 
@@ -95,12 +99,9 @@ void SiteGenerator::generatePage(const fs::path& fromPath,
         return;
     }
 
-    if (destinationPath.has_parent_path())
-    {
-        fs::create_directories(destinationPath.parent_path());
-    }
+    fs::create_directories(outputPath.parent_path());
 
-    std::ofstream outFile(destinationPath);
+    std::ofstream outFile(outputPath);
 
     if (!outFile.is_open())
     {
@@ -113,7 +114,7 @@ void SiteGenerator::generatePage(const fs::path& fromPath,
     if (!outFile)
     {
         std::cerr << "Error writing output file: "
-            << destinationPath << '\n';
+            << outputPath << '\n';
         return;
     }
 }
