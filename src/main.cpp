@@ -31,7 +31,7 @@ int main()
     }
     */
     SiteGenerator sg;
-    sg.generatePagesRecursive("content/index.md", "template.html", "public/index.html");
+    sg.generatePagesRecursive("content", "template.html", "public/index.html");
 
     return 0;
 }

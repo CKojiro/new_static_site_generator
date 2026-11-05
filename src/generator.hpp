@@ -18,6 +18,7 @@ std::string extractTitle(const std::string& theMarkdown);
 class SiteGenerator
 {
 private:
+    fs::path contentPath = "content/";
 public:
     void generatePage(const fs::path& fromPath,
         const fs::path& templatePath, const fs::path& destinationPath);

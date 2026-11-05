@@ -68,7 +68,6 @@ void SiteGenerator::generatePage(const fs::path& fromPath,
         std::cerr << e.what() << '\n';
         return;
     }
-    
 
     std::string htmlContents = markdownToHTML(markdown)->toHTML();
 
@@ -122,21 +121,22 @@ void SiteGenerator::generatePage(const fs::path& fromPath,
 void SiteGenerator::generatePagesRecursive(const fs::path& directoryPath,
     const fs::path& templatePath, const fs::path& destinationPath)
 {
-    if (!fs::exists() || !fs::is_directory)
-        std::cerr << "";
+    if (!fs::exists(directoryPath) || !fs::is_directory(directoryPath))
+    {
+        std::cerr << "Directory path does not exist or is not a directory." << std::endl;
+        return;
+    }
 
     try
     {
-        for (const auto& entry : fs::recursive_directory_iterator())
+        for (const auto& entry : fs::recursive_directory_iterator(directoryPath))
         {
-            
+            if (entry.is_regular_file() && entry.path().extension() == ".md")
+                generatePage(entry.path(), templatePath, destinationPath);
         }
     }
     catch(const fs::filesystem_error& e)
     {
         std::cerr << "Filesystem error: " << e.what() << '\n';
     }
-    
-
-    generatePage();
 }
