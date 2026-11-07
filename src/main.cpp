@@ -1,37 +1,20 @@
 
 #include <iostream>
 
-#define MD4QT_QT_SUPPORT
-//#include "../md4qt/parser.h"
 #include "filemove.hpp"
 #include "generator.hpp"
 
 int main(int argc, char* argv[])
 {
-    /*
-    std::cout << "It works!" << std::endl;
-    MD::Parser<MD::QStringTrait> p;
+    std::string basepath = "/";
 
-    auto doc = p.parse(QStringLiteral("your_markdown.md"));
-	
-    for (auto it = doc->items().cbegin(), last = doc->items().cend(); it != last; ++it)
+    if (argc > 1)
     {
-        switch((*it)->type())
-        {
-            case MD::ItemType::Anchor :
-            {
-                auto a = static_cast< MD::Anchor< MD::QStringTrait >* > (it->get());
-                qDebug() << a->label();
-            }
-                break;
-
-            default :
-                break;
-        }
+        basepath = argv[1];
     }
-    */
+    
     SiteGenerator sg;
-    sg.generatePagesRecursive("content", "template.html", "public");
+    sg.generatePagesRecursive("content", "template.html", "docs", basepath);
 
     return 0;
 }

@@ -27,8 +27,24 @@ std::string extractTitle(const std::string& theMarkdown)
     return output;
 }
 
-void SiteGenerator::generatePage(const fs::path& fromPath,
-    const fs::path& templatePath, const fs::path& destinationPath)
+void replaceAll(std::string& text,
+    const std::string& search,
+    const std::string& replacement)
+{
+    std::size_t position = 0;
+
+    while ((position = text.find(search, position)) != std::string::npos)
+    {
+        text.replace(position, search.length(), replacement);
+        position += replacement.length();
+    }
+}
+
+void SiteGenerator::generatePage(
+    const fs::path& fromPath,
+    const fs::path& templatePath,
+    const fs::path& destinationPath,
+    const std::string& basepath)
 {
     fs::path relativePath = fs::relative(fromPath, contentPath);
     relativePath.replace_extension(".html");
@@ -99,6 +115,9 @@ void SiteGenerator::generatePage(const fs::path& fromPath,
         return;
     }
 
+    replaceAll(templateFile, "href=\"/", "href=\"" + basepath);
+    replaceAll(templateFile, "src=\"/", "src=\"" + basepath);
+
     fs::create_directories(outputPath.parent_path());
 
     std::ofstream outFile(outputPath);
@@ -119,8 +138,11 @@ void SiteGenerator::generatePage(const fs::path& fromPath,
     }
 }
 
-void SiteGenerator::generatePagesRecursive(const fs::path& directoryPath,
-    const fs::path& templatePath, const fs::path& destinationPath)
+void SiteGenerator::generatePagesRecursive(
+    const fs::path& directoryPath,
+    const fs::path& templatePath, 
+    const fs::path& destinationPath,
+    const std::string& basepath)
 {
     if (!fs::exists(directoryPath) || !fs::is_directory(directoryPath))
     {
@@ -133,7 +155,7 @@ void SiteGenerator::generatePagesRecursive(const fs::path& directoryPath,
         for (const auto& entry : fs::recursive_directory_iterator(directoryPath))
         {
             if (entry.is_regular_file() && entry.path().extension() == ".md")
-                generatePage(entry.path(), templatePath, destinationPath);
+                generatePage(entry.path(), templatePath, destinationPath, basepath);
         }
     }
     catch(const fs::filesystem_error& e)
