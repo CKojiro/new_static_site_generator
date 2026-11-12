@@ -14,4 +14,6 @@ Arcadia Frontiers utilizes a hybrid client server architecture with client-side 
 
 ![Playing Together](/images/arcadia_frontiers_2.png)
 
-## 
+## Multiplayer
+
+Players can see each other in real time and with great responsiveness.
