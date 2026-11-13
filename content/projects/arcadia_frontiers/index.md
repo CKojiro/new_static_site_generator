@@ -16,4 +16,4 @@ Arcadia Frontiers utilizes a hybrid client server architecture with client-side 
 
 ## Multiplayer
 
-Players can see each other in real time and with great responsiveness.
+Multiplayer was a feature I wanted since I first had Arcadia Frontiers as a brain child. The original project started out as a single player top-down action fantasy extraction game because I did not think that multiplayer was feasible. But after getting pretty far with the single player version, I decided to transfer those core elements to a multiplayer framework before I was in too deep optimizing for a single player architecture.
