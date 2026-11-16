@@ -2,6 +2,8 @@
 
 [< Back Home](/)
 
-Give me a call anytime to chat!
-
+### Give me a call:
 `555-555-5555`
+
+### Or email me at:
+smiths12324@gmail.com
