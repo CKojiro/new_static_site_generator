@@ -24,4 +24,21 @@ Multiplayer was a feature I wanted since I first had Arcadia Frontiers as a brai
 
 As far as I am aware, Arcadia Frontiers is the only game that is in the extremely niche genre of multiplayer top-down action fantasy extraction. While there are top-down extraction games and plenty of multiplayer fantasy games that may also be top-down. Nothing that is currently out there is multiplayer, top-down, action, fantasy, and extraction all in one. It just has not been done yet.
 
-## 
+## Engineering Challenges
+
+### Client-side prediction and reconciliation
+
+
+
+### Entity state synchronization
+
+
+
+## Technical Implementation
+
+Language: C++
+Graphics: SFML 3.0.2
+Build system: CMake
+Architecture: Client/server hybrid
+Networking: UDP packet based communication
+Game loop: Real-time input processing, state updates, and rendering
